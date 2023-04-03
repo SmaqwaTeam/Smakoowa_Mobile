@@ -1,6 +1,6 @@
 # smakowa
 
-A new Flutter project.
+Flutter project for recipe  mobile app
 
 ## Getting Started
 
