@@ -94,7 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Add',
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white70,
+        ),
       ),
       drawer: Drawer(
         child: Text("boo"),
