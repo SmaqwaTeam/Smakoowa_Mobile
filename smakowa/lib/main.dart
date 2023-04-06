@@ -18,17 +18,21 @@ class MyApp extends StatelessWidget {
       title: 'Smakoowa',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          iconTheme: IconThemeData(
-            color: Colors.grey[20],
+          appBarTheme: AppBarTheme(
+            iconTheme: IconThemeData(
+              color: Colors.grey[20],
+            ),
+            foregroundColor: Colors.amber,
+            centerTitle: true,
+            backgroundColor: Colors.grey[50],
+            elevation: 0.00,
           ),
-          foregroundColor: Colors.amber,
-          centerTitle: true,
-          backgroundColor: Colors.grey[50],
-          elevation: 0.00,
-        ),
-        primarySwatch: Colors.orange,
-      ),
+          primarySwatch: Colors.orange,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  textStyle: TextStyle(
+            color: Colors.white,
+          )))),
       home: const MyHomePage(title: 'Smakoowa'),
     );
   }

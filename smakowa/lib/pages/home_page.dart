@@ -9,12 +9,12 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
+          const Padding(
+            padding: EdgeInsets.symmetric(
               vertical: 10,
               horizontal: 22,
             ),
-            child: const Text(
+            child: Text(
               'Recomended for you',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
