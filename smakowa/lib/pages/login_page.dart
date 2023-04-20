@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smakowa/models/auth/login_client.api.dart';
 import 'package:smakowa/pages/register_page.dart';
 import 'package:validators/validators.dart';
+import 'package:smakowa/models/auth/login_client.api.dart';
+import 'package:smakowa/main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,10 +14,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -47,16 +54,17 @@ class _LoginPageState extends State<LoginPage> {
                   bottom: 15,
                 ),
                 child: TextFormField(
+                  controller: nameController,
                   validator: (value) {
-                    if (!isEmail(value!) || value.isEmpty) {
-                      return 'Invalid Email';
+                    if (value == null || value.isEmpty) {
+                      return 'Invalid name';
                     }
                     return null;
                   },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter email address',
+                    labelText: 'Name',
+                    hintText: 'Enter name',
                   ),
                 ),
               ),
@@ -67,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   bottom: 5,
                 ),
                 child: TextFormField(
+                  controller: passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter password';
@@ -95,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ElevatedButton(
@@ -104,15 +113,14 @@ class _LoginPageState extends State<LoginPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Processing Data')),
                     );
+
+                    LoginApiClient().login(nameController.text.toString(),
+                        passwordController.text.toString());
+
+                    nameController.clear();
+                    passwordController.clear();
                   }
                 },
-                child: const Text(
-                  'Login',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 60,
@@ -122,8 +130,15 @@ class _LoginPageState extends State<LoginPage> {
                   //   borderRadius: BorderRadius.circular(8),
                   // ),
                 ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 22,
               ),
               Row(

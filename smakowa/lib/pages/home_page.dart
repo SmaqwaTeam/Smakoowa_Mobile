@@ -4,6 +4,7 @@ import 'package:smakowa/pages/recipe_list.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +41,14 @@ class HomePage extends StatelessWidget {
               rating: '4.0',
               thumbnailUrl:
                   'https://images.themodernproper.com/billowy-turkey/production/posts/2022/MarryMeChicken_7.jpg?w=1200&h=1800&q=82&fm=jpg&fit=crop&dm=1661981453&s=eda3bbe6bf02f7b108d003457c1ea99e'),
-          RecipeCard(
-              title: 'Pancakes',
-              cookTime: '10 min',
-              rating: '4.0',
-              thumbnailUrl: 'thumbnailUrl'),
+          // RecipeCard(
+          //     title: 'Pancakes',
+          //     cookTime: '10 min',
+          //     rating: '4.0',
+          //     thumbnailUrl: ''),
         ],
       ),
+     
     );
   }
 }
