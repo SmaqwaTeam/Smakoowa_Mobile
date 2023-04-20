@@ -30,6 +30,10 @@ environment:
 dependencies:
   validators: ^3.0.0
   easy_search_bar: ^2.4.2
+  http: ^0.13.5
+  shared_preferences: ^2.1.0
+  flutter_secure_storage: ^8.0.0
+  get: ^4.6.5
   flutter:
     sdk: flutter
     
