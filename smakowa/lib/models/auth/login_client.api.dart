@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:js';
+// import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +13,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginApiClient extends GetxController {
   final Future<SharedPreferences> _userData = SharedPreferences.getInstance();
+
+  final storage = new FlutterSecureStorage();
 
   Future<void> login(String name, String password) async {
     Map data = {
@@ -30,23 +32,29 @@ class LoginApiClient extends GetxController {
         body: jsonEncode(data),
       );
 
-      final decode = jsonDecode(responce.body);
-      print(responce.statusCode);
-      if (decode['statusCode'] == 200) {
+      // print(responce.statusCode);
+      if (responce.statusCode == 200) {
+        final decode = jsonDecode(responce.body);
         var token = decode['content']['token'];
 
-        final SharedPreferences? userData = await _userData;
-        Get.defaultDialog(
-          title: 'Sucessfull Login',
-          middleText: decode['message'].toString(),
-        );
+        await storage.write(key: 'access', value: token);
 
-        await userData?.setString('token', token);
-        // final String? action = userData!.getString('token');
-        // Navigator.pop(data);
-
-        Get.to(const MyHomePage());
-        //redirekt
+        showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Success"),
+                content: Text(decode['message'].toString()),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.off(const MyHomePage());
+                    },
+                    child: Text('OK'),
+                  )
+                ],
+              );
+            });
       } else {
         throw jsonDecode(responce.body)['message'];
       }
@@ -58,7 +66,7 @@ class LoginApiClient extends GetxController {
           builder: (context) {
             return SimpleDialog(
               title: Text('Error'),
-              contentPadding: EdgeInsets.all(20),
+              contentPadding: const EdgeInsets.all(20),
               children: [Text(e.toString())],
             );
           });
