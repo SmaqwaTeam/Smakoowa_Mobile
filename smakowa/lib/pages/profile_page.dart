@@ -5,6 +5,7 @@ import 'package:smakowa/pages/login_page.dart';
 import 'package:smakowa/pages/profile_details.dart';
 import 'package:smakowa/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,11 +16,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Future<void>? isLogin() async {
-    final Future<SharedPreferences> _userData = SharedPreferences.getInstance();
+    // final Future<SharedPreferences> _userData = SharedPreferences.getInstance();
+    // final SharedPreferences? userData = await _userData;
 
-    final SharedPreferences? userData = await _userData;
+    final storage = const FlutterSecureStorage();
 
-    if (userData!.getString('token') == null) {
+    var value = await storage.read(key: 'access');
+
+    if (value == null) {
       setState(() {
         page = const ProfileHelpRoute();
       });

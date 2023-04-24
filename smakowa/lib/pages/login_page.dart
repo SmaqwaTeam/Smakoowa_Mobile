@@ -114,8 +114,10 @@ class _LoginPageState extends State<LoginPage> {
                       const SnackBar(content: Text('Processing Data')),
                     );
 
-                    LoginApiClient().login(nameController.text.toString(),
-                        passwordController.text.toString());
+                    LoginApiClient().login(
+                      nameController.text.toString(),
+                      passwordController.text.toString(),
+                    );
 
                     nameController.clear();
                     passwordController.clear();
