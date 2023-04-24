@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smakowa/models/auth/register_client.api.dart';
 import 'package:validators/validators.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -10,6 +11,12 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   bottom: 15,
                 ),
                 child: TextFormField(
+                  controller: nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter name';
@@ -68,6 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   bottom: 15,
                 ),
                 child: TextFormField(
+                  controller: emailController,
                   validator: (value) {
                     if (!isEmail(value!) || value.isEmpty) {
                       return 'Invalid Email';
@@ -88,6 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   bottom: 15,
                 ),
                 child: TextFormField(
+                  controller: passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter password';
@@ -111,9 +121,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   bottom: 5,
                 ),
                 child: TextFormField(
+                  controller: confirmPasswordController,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter password';
+                    if (value == null ||
+                        value.isEmpty ||
+                        !equals(passwordController.text,
+                            confirmPasswordController.text)) {
+                      return 'Passwords not match';
                     }
                     return null;
                   },
@@ -136,6 +150,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Processing Data')),
                     );
+                    RegisterApiClient().login(
+                        nameController.text.toString(),
+                        emailController.text.toString(),
+                        passwordController.text.toString());
+
+                    passwordController.clear();
+                    confirmPasswordController.clear();
                   }
                 },
                 child: const Text(
