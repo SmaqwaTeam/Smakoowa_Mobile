@@ -38,7 +38,15 @@ class LoginApiClient extends GetxController {
         var token = decode['content']['token'];
 
         await storage.write(key: 'access', value: token);
+        await storage.write(
+            key: 'userName', value: decode['content']['user']['username']);
+        await storage.write(
+            key: 'userId', value: decode['content']['user']['id'].toString());
+        await storage.write(
+            key: 'userEmail', value: decode['content']['user']['email']);
 
+        // var value = await storage.read(key: 'userName');
+        // print(value);
         showDialog(
             context: Get.context!,
             builder: (context) {
@@ -50,7 +58,7 @@ class LoginApiClient extends GetxController {
                     onPressed: () {
                       Get.off(const MyHomePage());
                     },
-                    child: Text('OK'),
+                    child: const Text('OK'),
                   )
                 ],
               );
