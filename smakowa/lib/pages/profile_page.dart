@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     } else {
       setState(() {
-        page = const ProfileDetail();
+        page = ProfileDetail();
       });
     }
   }

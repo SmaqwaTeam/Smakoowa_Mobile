@@ -1,8 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:smakowa/pages/test_routing.dart';
+import 'package:get/get.dart';
+import 'package:smakowa/main.dart';
+import 'package:smakowa/models/auth/user_data.dart';
 
-class ProfileDetail extends StatelessWidget {
-  const ProfileDetail({super.key});
+class ProfileDetail extends StatefulWidget {
+  ProfileDetail({super.key});
+
+  @override
+  State<ProfileDetail> createState() => _ProfileDetailState();
+}
+
+class _ProfileDetailState extends State<ProfileDetail> {
+  String? username;
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+    readData();
+  }
+
+  Future readData() async {
+    final username = await UserData.getUserName();
+    final email = await UserData.getUserEmail();
+
+    setState(() {
+      this.username = username;
+      this.email = email;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +53,23 @@ class ProfileDetail extends StatelessWidget {
                   radius: 50,
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 60,
               ),
               const Text(
                 'Name',
                 style: TextStyle(color: Colors.grey, letterSpacing: 2),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                'James Cameron',
-                style: TextStyle(
+                username ?? '',
+                style: const TextStyle(
                     color: Colors.black,
                     letterSpacing: 2,
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               const Text(
                 'Email',
                 style: TextStyle(
@@ -50,22 +77,22 @@ class ProfileDetail extends StatelessWidget {
                   letterSpacing: 2,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                'amber@gmail.com',
-                style: TextStyle(
+                email ?? '',
+                style: const TextStyle(
                     // color: Colors.amberAccent[200],
                     letterSpacing: 2,
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               ProfileListMenu(
                 title: 'My recipes',
                 icon: Icons.receipt_long_rounded,
                 onPress: () {},
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ProfileListMenu(
@@ -73,13 +100,26 @@ class ProfileDetail extends StatelessWidget {
                 icon: Icons.edit,
                 onPress: () {},
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               ProfileListMenu(
                 title: 'Logout',
                 icon: Icons.logout,
-                onPress: () {},
+                onPress: () {
+                  UserData.logOut();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Log out')),
+                  );
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const MyHomePage();
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),
