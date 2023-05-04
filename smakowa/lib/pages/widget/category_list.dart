@@ -33,7 +33,9 @@ class _CategoryListState extends State<CategoryList> {
                     return ListTile(
                       title: Text(category.categoryName),
                       trailing: const Icon(Icons.chevron_right_outlined),
-                      onTap: () {},
+                      onTap: () {
+                        
+                      },
                     );
                   }),
                   separatorBuilder: ((context, index) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smakowa/models/auth/login_client.api.dart';
-import 'package:smakowa/pages/register_page.dart';
+import 'package:smakowa/pages/profile/register_page.dart';
 import 'package:validators/validators.dart';
 import 'package:smakowa/models/auth/login_client.api.dart';
 import 'package:smakowa/main.dart';

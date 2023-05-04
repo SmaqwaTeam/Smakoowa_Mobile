@@ -112,12 +112,13 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     const SnackBar(content: Text('Log out')),
                   );
 
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
                         return const MyHomePage();
                       },
                     ),
+                    (route) => false,
                   );
                 },
               ),

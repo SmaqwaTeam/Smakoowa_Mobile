@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:smakowa/pages/login_helper.dart';
-import 'package:smakowa/pages/login_page.dart';
-import 'package:smakowa/pages/profile_details.dart';
-import 'package:smakowa/pages/register_page.dart';
+import 'package:smakowa/pages/profile/login_helper.dart';
+import 'package:smakowa/pages/profile/login_page.dart';
+import 'package:smakowa/pages/profile/profile_details.dart';
+import 'package:smakowa/pages/profile/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
