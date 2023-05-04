@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:smakowa/pages/category_list.dart';
-import 'package:smakowa/pages/favorite_page.dart';
-import 'package:smakowa/pages/home_page.dart';
-import 'package:smakowa/pages/profile_page.dart';
+import 'package:smakowa/pages/widget/category_list.dart';
+import 'package:smakowa/pages/favorite/favorite_page.dart';
+import 'package:smakowa/pages/home/home_page.dart';
+import 'package:smakowa/pages/profile/profile_page.dart';
 import 'package:smakowa/pages/settings_page.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:smakowa/pages/tags_list.dart';
@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return CategoryList();
+                    return const CategoryList();
                   },
                 ),
               );
@@ -185,7 +185,6 @@ class DrawerListTile extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPress;
-  //onPress not implement!
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smakowa/main.dart';
-import 'package:smakowa/pages/login_page.dart';
+import 'package:smakowa/pages/profile/login_page.dart';
 import 'package:smakowa/utils/endpoints.api.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
