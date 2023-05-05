@@ -4,13 +4,13 @@ class RecipeCard extends StatelessWidget {
   final String title;
   // final String rating;
   final String cookTime;
-  // final String thumbnailUrl;
+  final String? thumbnailUrl;
 
   RecipeCard({
     required this.title,
     required this.cookTime,
     // required this.rating,
-    // required this.thumbnailUrl,
+    this.thumbnailUrl,
   });
 
   @override
@@ -38,8 +38,11 @@ class RecipeCard extends StatelessWidget {
             Colors.black.withOpacity(0.25),
             BlendMode.multiply,
           ),
-          image: NetworkImage(
-              'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'),
+          image: thumbnailUrl != null
+              ? NetworkImage(
+                  'https://smakoowaapi.azurewebsites.net/api/Images/GetRecipeImage/$thumbnailUrl')
+              : const NetworkImage(
+                  'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'),
           fit: BoxFit.cover,
         ),
       ),

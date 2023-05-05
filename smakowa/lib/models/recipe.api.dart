@@ -7,16 +7,7 @@ import 'package:smakowa/models/recipe.dart';
 
 import '../utils/endpoints.api.dart';
 
- enum TimeToServe {
-        t15min,
-        from15To30Min,
-        from30To45Min,
-        from45To60Min,
-        over60Min
-    }
-    
 class RecipeApi {
- 
   Future<List<Recipe>> getRecipe() async {
     final response = await http.get(
       Uri.parse(

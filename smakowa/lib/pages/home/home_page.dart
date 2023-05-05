@@ -15,7 +15,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<List<Recipe>> futureRecipes;
 
-
   @override
   void initState() {
     super.initState();
@@ -53,6 +52,7 @@ class _HomePageState extends State<HomePage> {
                   child: RecipeCard(
                     title: recipe.name,
                     cookTime: recipe.time.toString(),
+                    thumbnailUrl: recipe.imageId,
                   ),
                 );
               },

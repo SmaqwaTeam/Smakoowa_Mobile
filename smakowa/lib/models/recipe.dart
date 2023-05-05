@@ -14,6 +14,7 @@ class Recipe {
   final String name;
   // final String description;
   final String time;
+  final String? imageId;
   // final double rating;
 
   Recipe({
@@ -21,10 +22,13 @@ class Recipe {
     required this.name,
     // required this.description,
     required this.time,
+    this.imageId,
     // required this.rating,
   });
 
-  factory Recipe.fromJson(Map<String, dynamic> json) {
+  factory Recipe.fromJson(
+    Map<String, dynamic> json,
+  ) {
     int timeValue = json['timeToMakeTier'];
 
     return Recipe(
@@ -32,15 +36,16 @@ class Recipe {
       name: json['name'],
       // description: json['description'],
       time: timeToServe[timeValue],
+      imageId: json['imageId'],
       // rating: json['rating'],
     );
   }
 
-  static List<Recipe> recipeFromSnapshot(List snapshot) {
-    return snapshot.map((data) {
-      return Recipe.fromJson(data);
-    }).toList();
-  }
+  // static List<Recipe> recipeFromSnapshot(List snapshot) {
+  //   return snapshot.map((data) {
+  //     return Recipe.fromJson(data,);
+  //   }).toList();
+  // }
 }
 
 
