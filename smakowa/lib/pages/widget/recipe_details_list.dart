@@ -91,11 +91,11 @@ class RecipeInstructionList extends StatelessWidget {
       children: [
         Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             top: 5.0,
             bottom: 15.0,
           ),
-          child: Text(
+          child: const Text(
             'Cooking Instructions',
           ),
         ),
@@ -104,10 +104,10 @@ class RecipeInstructionList extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
             color: Color(0x33FF5C4D),
           ),
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             bottom: 15.0,
           ),
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: 5.0,
           ),
           child: ListView.builder(
@@ -124,14 +124,14 @@ class RecipeInstructionList extends StatelessWidget {
                     ),
                     leading: Text(
                       'Step ${index + 1}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.orange,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     title: Text(
                       recipeInfo[index].getName(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xBB000000),
                       ),
                     ),

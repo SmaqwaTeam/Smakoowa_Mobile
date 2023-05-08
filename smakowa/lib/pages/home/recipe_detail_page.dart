@@ -15,10 +15,8 @@ class RecipeDetailsPage extends StatefulWidget {
 }
 
 class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
-  final List<String> test = ['milk', 'bakon'];
   late Future<RecipeDeatil> futureRecipeDetail;
   // late RecipeDeatil? recipeDetail;
-  RecipeDeatil? dupa;
 
   @override
   void initState() {
@@ -27,7 +25,6 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
 
     super.initState();
     loadRecipeDetails();
-    // print(recipeDetail is RecipeDeatil ? 'jest' : 'nie jest');
   }
 
   loadRecipeDetails() async {
@@ -35,7 +32,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
         await RecipeDetailsApi(id: widget.recipeId).getRecipeDetail();
     // print(result is RecipeDeatil ? 'yes' : 'no');
     // print(result.description);
-    dupa = result;
+
     setState(() {});
     // return result;
   }
@@ -76,7 +73,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               decoration: BoxDecoration(
                                   color: Colors.black.withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black12,
                                       blurRadius: 4,
@@ -122,7 +119,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Tag'),
-                          SizedBox(
+                          const SizedBox(
                             height: 10.0,
                           ),
                           Row(

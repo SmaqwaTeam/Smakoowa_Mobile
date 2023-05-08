@@ -54,13 +54,6 @@ class RecipeDetailsApi {
 
       final entry = json['content'];
       // List<String> ing = [];
-
-      // albo dać List<String> i  tylko name
-
-      final ingrediendts = (json['content']['ingredients'] as List)
-          .map((e) => Ingredients.fromJson(e))
-          .toList();
-
       // for (var i = 0; i < json['content']['ingredients'].length; i++) {
       //   final temp = json['content']['ingredients'][i]['name'];
 
@@ -68,6 +61,10 @@ class RecipeDetailsApi {
       //     temp,
       //   );
       // }
+
+      final ingrediendts = (json['content']['ingredients'] as List)
+          .map((e) => Ingredients.fromJson(e))
+          .toList();
 
       final instructions = (json['content']['instructions'] as List)
           .map((e) => Instructions.fromJson(e))

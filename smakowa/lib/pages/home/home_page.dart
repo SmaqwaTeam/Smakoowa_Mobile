@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Recipe>> futureRecipes;
-  late Future<RecipeDeatil> futureRecipeDetail;
 
   final String endpoint = ApiEndPoints.baseUrl + '/api/Recipes/GetAll';
 
@@ -24,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // loadRecipe();
-    // loadRecipeDetails();
+
     futureRecipes = RecipeApi().getRecipe(endpoint);
   }
 
@@ -34,16 +33,6 @@ class _HomePageState extends State<HomePage> {
       print(element.name);
     });
   }
-
-  loadRecipeDetails() async {
-    final result = await RecipeDetailsApi(id: 1).getRecipeDetail();
-    print(result.instructions);
-  }
-
-  // Future<void> fetchRecipes() async {
-  //  final recipes = await RecipeApi().getRecipe();
-
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +47,6 @@ class _HomePageState extends State<HomePage> {
                 Recipe recipe = snapshot.data?[index];
                 return GestureDetector(
                   onTap: () {
-                    // final recipeDetails =
-                    //     RecipeDetailsApi(id: recipe.id).getRecipeDetail();
                     // Get.to(RecipeDetailsPage(recipeId: recipe.id,));
                     Navigator.push(
                       context,
@@ -91,7 +78,3 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 }
-
-
-    // return RecipeCard(
-    //                 title: recipe.name, cookTime: recipe.time.toString());
