@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:smakowa/main.dart';
-import 'package:get/get.dart';
 
 class UserData {
   static final storage = new FlutterSecureStorage();

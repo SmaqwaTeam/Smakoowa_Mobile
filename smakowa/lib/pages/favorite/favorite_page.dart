@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smakowa/pages/home/recipe_detail_page.dart';
 import 'package:smakowa/pages/test_routing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +24,7 @@ class _FavoritePageState extends State<FavoritePage> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return const TestPage();
+                    return TestPage();
                   },
                 ),
               );
