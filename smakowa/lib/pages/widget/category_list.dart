@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smakowa/models/category.api.dart';
 import 'package:smakowa/models/category.dart';
 
+import '../home/recipe_listy_by_category.dart';
+
 class CategoryList extends StatefulWidget {
   const CategoryList({super.key});
 
@@ -34,7 +36,16 @@ class _CategoryListState extends State<CategoryList> {
                       title: Text(category.categoryName),
                       trailing: const Icon(Icons.chevron_right_outlined),
                       onTap: () {
-                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return CategoryCardList(
+                                categoryId: category.id,
+                              );
+                            },
+                          ),
+                        );
                       },
                     );
                   }),
