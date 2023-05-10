@@ -155,6 +155,10 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                                 icon: Icons.person,
                                 text: ' person',
                               ),
+                              IconText(
+                                icon: Icons.favorite,
+                                text: recipe.likeCount.toString(),
+                              ),
                             ],
                           ),
                           const SizedBox(
