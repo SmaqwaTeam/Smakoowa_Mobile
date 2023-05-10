@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:smakowa/pages/home/add_recipe.dart';
 import 'package:smakowa/pages/widget/category_list.dart';
 import 'package:smakowa/pages/favorite/favorite_page.dart';
 import 'package:smakowa/pages/home/home_page.dart';
@@ -119,7 +120,16 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 //ADD BUTTON
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const AddRecipe();
+              },
+            ),
+          );
+        },
         tooltip: 'Add',
         child: const Icon(
           Icons.add,

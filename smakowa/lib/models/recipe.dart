@@ -38,7 +38,7 @@ class RecipeDeatil {
   final int id;
   final String name;
   final String time;
-  final int sevingTier;
+  final int servingsTier;
   final String? imageId;
   final String description;
   // final List<int> tagsId;
@@ -54,7 +54,7 @@ class RecipeDeatil {
     required this.name,
     required this.time,
     required this.imageId,
-    required this.sevingTier,
+    required this.servingsTier,
     required this.description,
     required this.categoryId,
     required this.ingredients,
@@ -70,7 +70,7 @@ class RecipeDeatil {
       id: json['id'],
       name: json['name'],
       imageId: json['imageId'],
-      sevingTier: json['servingsTier'],
+      servingsTier: json['servingsTier'],
       time: timeToServe[timeValue],
       description: json['description'],
       categoryId: json['categoryId'],
@@ -80,18 +80,59 @@ class RecipeDeatil {
   }
 }
 
+class RecipeAdd {
+  final String name;
+  final int time;
+  final int servingsTier;
+  final String? imageId;
+  final String description;
+  final List<int> tagIds;
+  final int categoryId;
+  final List<Ingredients> ingredients;
+  final List<Instructions> instructions;
+
+  RecipeAdd({
+    required this.name,
+    required this.time,
+    this.imageId,
+    required this.servingsTier,
+    required this.description,
+    required this.categoryId,
+    required this.ingredients,
+    required this.instructions,
+    required this.tagIds,
+  });
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "description": description,
+        "servingsTier": servingsTier,
+        "timeToMakeTier": time,
+        "categoryId": categoryId,
+        "tagIds": List<dynamic>.from(tagIds.map((x) => x)),
+        "ingredients": List<dynamic>.from(ingredients.map((x) => x.toJson())),
+        "instructions": List<dynamic>.from(instructions.map((x) => x.toJson())),
+      };
+}
+
 class Ingredients {
-  final int id;
+  final int? id;
   final String name;
   final int position;
   final int group;
 
   Ingredients({
-    required this.id,
+    this.id,
     required this.name,
     required this.position,
     required this.group,
   });
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "position": position,
+        "group": group,
+      };
 
   factory Ingredients.fromJson(Map<String, dynamic> json) {
     return Ingredients(
@@ -107,17 +148,22 @@ class Ingredients {
 }
 
 class Instructions {
-  final int id;
+  final int? id;
   final String content;
   final int position;
   final String? imgUrl;
 
   Instructions({
-    required this.id,
+    this.id,
     required this.content,
     required this.position,
     this.imgUrl,
   });
+
+  Map<String, dynamic> toJson() => {
+        "content": content,
+        "position": position,
+      };
 
   factory Instructions.fromJson(Map<String, dynamic> json) {
     return Instructions(

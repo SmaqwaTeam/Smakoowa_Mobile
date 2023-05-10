@@ -23,7 +23,7 @@ class LoginApiClient extends GetxController {
     };
     // var body = json.encode(data);
     try {
-      final responce = await http.post(
+      final response = await http.post(
         Uri.parse(ApiEndPoints.baseUrl + '/api/Account/Login'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
@@ -33,8 +33,8 @@ class LoginApiClient extends GetxController {
       );
 
       // print(responce.statusCode);
-      if (responce.statusCode == 200) {
-        final decode = jsonDecode(responce.body);
+      if (response.statusCode == 200) {
+        final decode = jsonDecode(response.body);
         var token = decode['content']['token'];
 
         await storage.write(key: 'access', value: token);
@@ -64,7 +64,7 @@ class LoginApiClient extends GetxController {
               );
             });
       } else {
-        throw jsonDecode(responce.body)['message'];
+        throw jsonDecode(response.body)['message'];
       }
     } catch (e) {
       print(e.toString());

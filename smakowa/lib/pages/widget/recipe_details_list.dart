@@ -28,7 +28,7 @@ class RecipeIngredientsList extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
-            color: Color(0x33FF5C4D),
+            color: const Color(0x33FF5C4D),
           ),
           margin: const EdgeInsets.only(
             bottom: 15.0,

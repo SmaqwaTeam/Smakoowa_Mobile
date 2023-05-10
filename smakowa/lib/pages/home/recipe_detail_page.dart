@@ -149,7 +149,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                               IconText(
                                 icon: Icons.room_service,
-                                text: 'Serving tier  ${recipe.sevingTier}',
+                                text: 'Serving tier  ${recipe.servingsTier}',
                               ),
                               IconText(
                                 icon: Icons.person,

@@ -9,6 +9,10 @@ class UserData {
   static const _keyUsername = 'userName';
   static const _keyUserEmail = 'userEmail';
   static const _keyUserId = 'userId';
+  static const _keyUserToken = 'access';
+
+  static Future<String?> getUserToken() async =>
+      await storage.read(key: _keyUserToken);
 
   static Future<String?> getUserName() async =>
       await storage.read(key: _keyUsername);

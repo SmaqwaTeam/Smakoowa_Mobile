@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smakowa/models/auth/user_data.dart';
 import 'dart:convert';
 
 import 'package:smakowa/models/recipe.dart';
@@ -76,7 +79,39 @@ class RecipeDetailsApi {
       // print(entry);
       return recipeDetail;
     } else {
-      throw Exception('Fail to load recipe');
+      throw Exception('Failed to load recipe');
+    }
+  }
+}
+
+class RecipeSendApi {
+  Future<void> postRecipe(RecipeAdd recipe) async {
+    Map data = recipe.toJson();
+
+    final token = await UserData.getUserToken();
+    print('Bearer ${token}');
+    try {
+      final response = await http.post(
+        Uri.parse(ApiEndPoints.baseUrl + '/api/Recipes/Create'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'text/plain',
+          HttpHeaders.authorizationHeader: 'Bearer ${token}',
+        },
+        body: jsonEncode(data),
+      );
+      print(recipe);
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        print(json['message']);
+
+        // print(entry);
+      } else {
+        throw jsonDecode(response.body)['message'];
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }
