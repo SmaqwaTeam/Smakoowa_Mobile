@@ -47,7 +47,7 @@ class RecipeDeatil {
   final List<Ingredients> ingredients;
   final List<Instructions> instructions;
   // final Data createdAt;
-  // final int likeCount;
+  final int likeCount;
 
   RecipeDeatil({
     required this.id,
@@ -59,11 +59,14 @@ class RecipeDeatil {
     required this.categoryId,
     required this.ingredients,
     required this.instructions,
-    // required this.likeCount,
+    required this.likeCount,
   });
 
-  factory RecipeDeatil.fromJson(Map<String, dynamic> json,
-      List<Ingredients> ingredients, List<Instructions> instructions) {
+  factory RecipeDeatil.fromJson(
+      Map<String, dynamic> json,
+      List<Ingredients> ingredients,
+      List<Instructions> instructions,
+      int likeCount) {
     int timeValue = json['timeToMakeTier'];
 
     return RecipeDeatil(
@@ -74,6 +77,7 @@ class RecipeDeatil {
       time: timeToServe[timeValue],
       description: json['description'],
       categoryId: json['categoryId'],
+      likeCount: likeCount,
       ingredients: ingredients,
       instructions: instructions,
     );

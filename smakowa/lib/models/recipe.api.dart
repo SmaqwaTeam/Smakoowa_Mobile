@@ -56,6 +56,7 @@ class RecipeDetailsApi {
       List<String> ingList = [];
 
       final entry = json['content'];
+      final likeCount = json['content']['likes'].length;
       // List<String> ing = [];
       // for (var i = 0; i < json['content']['ingredients'].length; i++) {
       //   final temp = json['content']['ingredients'][i]['name'];
@@ -74,9 +75,9 @@ class RecipeDetailsApi {
           .toList();
 
       final recipeDetail =
-          RecipeDeatil.fromJson(entry, ingrediendts, instructions);
+          RecipeDeatil.fromJson(entry, ingrediendts, instructions, likeCount);
 
-      // print(entry);
+      // print('like ' + likeCount.toString());
       return recipeDetail;
     } else {
       throw Exception('Failed to load recipe');
