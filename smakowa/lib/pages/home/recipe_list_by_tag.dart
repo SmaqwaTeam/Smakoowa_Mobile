@@ -7,17 +7,16 @@ import '../../models/recipe.api.dart';
 import '../../models/recipe.dart';
 import '../../utils/endpoints.api.dart';
 
-class CategoryCardList extends StatefulWidget {
-  const CategoryCardList(
-      {super.key, required this.categoryId, required this.categoryName});
-  final int categoryId;
-  final String categoryName;
+class TagCardList extends StatefulWidget {
+  const TagCardList({super.key, required this.tagId, required this.tagName});
+  final int tagId;
+  final String tagName;
 
   @override
-  State<CategoryCardList> createState() => _CategoryCardList();
+  State<TagCardList> createState() => _TagCardList();
 }
 
-class _CategoryCardList extends State<CategoryCardList> {
+class _TagCardList extends State<TagCardList> {
   late Future<List<Recipe>> futureRecipes;
 
   @override
@@ -25,22 +24,15 @@ class _CategoryCardList extends State<CategoryCardList> {
     super.initState();
     // loadRecipe();
     final String endpoint =
-        '${ApiEndPoints.baseUrl}/api/Recipes/GetRecipesByCategoryId?categoryId=${widget.categoryId}';
+        '${ApiEndPoints.baseUrl}/api/Recipes/GetRecipesByTagIds?tagIds=${widget.tagId}&tagIds=0';
     futureRecipes = RecipeApi().getRecipe(endpoint);
   }
-
-  // loadRecipe() async {
-  //   final result = await RecipeApi().getRecipe(endpoint);
-  //   result.forEach((element) {
-  //     print(element.name);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.categoryName),
+          title: Text(widget.tagName),
         ),
         body: Center(
           child: FutureBuilder<List<Recipe>>(

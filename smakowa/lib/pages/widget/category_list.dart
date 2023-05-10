@@ -23,7 +23,9 @@ class _CategoryListState extends State<CategoryList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Category'),
+      ),
       body: Center(
         child: FutureBuilder<List<Categories>>(
           future: futureCategories,
@@ -42,6 +44,7 @@ class _CategoryListState extends State<CategoryList> {
                             builder: (context) {
                               return CategoryCardList(
                                 categoryId: category.id,
+                                categoryName: category.categoryName,
                               );
                             },
                           ),
