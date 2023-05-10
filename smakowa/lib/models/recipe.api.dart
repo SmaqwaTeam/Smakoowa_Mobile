@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:smakowa/models/auth/user_data.dart';
 import 'dart:convert';
 
 import 'package:smakowa/models/recipe.dart';
 
+import '../main.dart';
 import '../utils/endpoints.api.dart';
 
 class RecipeApi {
@@ -105,7 +107,22 @@ class RecipeSendApi {
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
-        print(json['message']);
+        showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Success"),
+                content: Text(json['message'].toString()),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.off(const MyHomePage());
+                    },
+                    child: const Text('OK'),
+                  )
+                ],
+              );
+            });
 
         // print(entry);
       } else {
@@ -113,6 +130,15 @@ class RecipeSendApi {
       }
     } catch (e) {
       print(e);
+      showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return SimpleDialog(
+              title: Text('Error'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
     }
   }
 }
