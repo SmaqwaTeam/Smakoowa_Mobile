@@ -83,8 +83,8 @@ class _AddRecipeState extends State<AddRecipe> {
                             //double type!!!
                             value: _currentServingsTierValue,
                             max: 4,
-                            min: 1,
-                            divisions: 3,
+                            min: 0,
+                            divisions: 4,
                             label: _currentServingsTierValue.round().toString(),
                             onChanged: (double value) {
                               setState(() {
@@ -113,8 +113,8 @@ class _AddRecipeState extends State<AddRecipe> {
                             //double type!!!
                             value: _currentTimeToMake,
                             max: 4,
-                            min: 1,
-                            divisions: 3,
+                            min: 0,
+                            divisions: 4,
                             label: _currentTimeToMake.round().toString(),
                             onChanged: (double value) {
                               setState(() {
