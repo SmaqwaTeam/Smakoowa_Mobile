@@ -14,11 +14,13 @@ class Recipe {
   final String name;
   final String time;
   final String? imageId;
+  final String description;
 
   Recipe({
     required this.id,
     required this.name,
     required this.time,
+    required this.description,
     this.imageId,
   });
 
@@ -26,11 +28,11 @@ class Recipe {
     int timeValue = json['timeToMakeTier'];
 
     return Recipe(
-      id: json['id'],
-      name: json['name'],
-      time: timeToServe[timeValue],
-      imageId: json['imageId'],
-    );
+        id: json['id'],
+        name: json['name'],
+        time: timeToServe[timeValue],
+        imageId: json['imageId'],
+        description: json['description']);
   }
 }
 
