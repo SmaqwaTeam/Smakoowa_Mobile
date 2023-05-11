@@ -3,6 +3,7 @@ import 'package:smakowa/pages/profile/current_user_recipes.dart';
 import 'package:get/get.dart';
 import 'package:smakowa/main.dart';
 import 'package:smakowa/models/auth/user_data.dart';
+import 'package:smakowa/pages/widget/edit_recipe_card.dart';
 
 import '../widget/profile_list_menu.dart';
 
@@ -110,6 +111,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                 icon: Icons.edit,
                 onPress: () {},
               ),
+              //test
+
               const SizedBox(
                 height: 50,
               ),

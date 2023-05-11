@@ -30,7 +30,7 @@ class ProfileListMenu extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 20,
         ),
       ),
