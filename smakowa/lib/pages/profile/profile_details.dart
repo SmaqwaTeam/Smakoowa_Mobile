@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:smakowa/pages/test_routing.dart';
+import 'package:smakowa/pages/profile/current_user_recipes.dart';
 import 'package:get/get.dart';
 import 'package:smakowa/main.dart';
 import 'package:smakowa/models/auth/user_data.dart';
+
+import '../widget/profile_list_menu.dart';
 
 class ProfileDetail extends StatefulWidget {
   ProfileDetail({super.key});
@@ -90,7 +92,15 @@ class _ProfileDetailState extends State<ProfileDetail> {
               ProfileListMenu(
                 title: 'My recipes',
                 icon: Icons.receipt_long_rounded,
-                onPress: () {},
+                onPress: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const CurrentUserRecipes();
+                      },
+                    ),
+                  );
+                },
               ),
               const SizedBox(
                 height: 15,
@@ -124,44 +134,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileListMenu extends StatelessWidget {
-  const ProfileListMenu({
-    super.key,
-    required this.title,
-    required this.icon,
-    required this.onPress,
-  });
-
-  final String title;
-  final IconData icon;
-  final VoidCallback onPress;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onPress,
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: Colors.grey[200],
-        ),
-        child: Icon(
-          icon,
-          color: Colors.amber,
-        ),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20,
         ),
       ),
     );
