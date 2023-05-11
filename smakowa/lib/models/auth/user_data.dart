@@ -28,9 +28,6 @@ class UserData {
   }
 
   static Future<bool> isLogin() async {
-    // final Future<SharedPreferences> _userData = SharedPreferences.getInstance();
-    // final SharedPreferences? userData = await _userData;
-
     final storage = const FlutterSecureStorage();
 
     var value = await storage.read(key: 'access');
