@@ -16,15 +16,22 @@ class FavoriteRecipeList extends StatefulWidget {
 
 class _FavoriteRecipeList extends State<FavoriteRecipeList> {
   late Future<List<Recipe>> futureRecipes;
+  final String endpoint =
+      '${ApiEndPoints.baseUrl}/api/Recipes/GetLikedRecipies';
 
   @override
   void initState() {
     super.initState();
     // loadRecipe();
-    final String endpoint =
-        '${ApiEndPoints.baseUrl}/api/Recipes/GetLikedRecipies';
-    futureRecipes = RecipeApi().getRecipe(endpoint);
-    //thrown error
+    futureRecipes = RecipeApi().getCurrentUSerRecipe(endpoint);
+  }
+
+  reloadRecipes() async {
+    var newRecipe = await RecipeApi().getCurrentUSerRecipe(endpoint);
+    setState(() {
+      futureRecipes = Future.value(newRecipe);
+      print(futureRecipes);
+    });
   }
 
   // loadRecipe() async {
@@ -37,52 +44,54 @@ class _FavoriteRecipeList extends State<FavoriteRecipeList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            // title: Text(),
-            ),
         body: Center(
-          child: FutureBuilder<List<Recipe>>(
-            future: futureRecipes,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data!.length == 0) {
-                  return const Center(
-                    child: Text('Dont have content'),
-                  );
-                }
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    Recipe recipe = snapshot.data?[index];
-                    return GestureDetector(
-                      onTap: () {
-                        // Get.to(RecipeDetailsPage(recipeId: recipe.id,));
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return RecipeDetailsPage(
-                                recipeId: recipe.id,
-                              );
-                            },
-                          ),
-                        );
-                        print(recipe.id);
-                      },
-                      child: RecipeCard(
-                        title: recipe.name,
-                        cookTime: recipe.time.toString(),
-                        thumbnailUrl: recipe.imageId,
-                      ),
-                    );
-                  },
-                  itemCount: snapshot.data!.length,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          reloadRecipes();
+        },
+        child: FutureBuilder<List<Recipe>>(
+          future: futureRecipes,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data!.length == 0) {
+                return const Center(
+                  child: Text('Dont have content'),
                 );
-              } else if (snapshot.hasError) {
-                return Text('Error ${snapshot.error}');
               }
-              return const CircularProgressIndicator();
-            },
-          ),
-        ));
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  Recipe recipe = snapshot.data?[index];
+                  return GestureDetector(
+                    onTap: () {
+                      // Get.to(RecipeDetailsPage(recipeId: recipe.id,));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return RecipeDetailsPage(
+                              recipeId: recipe.id,
+                            );
+                          },
+                        ),
+                      );
+                      print(recipe.id);
+                    },
+                    child: RecipeCard(
+                      title: recipe.name,
+                      cookTime: recipe.time.toString(),
+                      thumbnailUrl: recipe.imageId,
+                    ),
+                  );
+                },
+                itemCount: snapshot.data!.length,
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error ${snapshot.error}');
+            }
+            return const CircularProgressIndicator();
+          },
+        ),
+      ),
+    ));
   }
 }
