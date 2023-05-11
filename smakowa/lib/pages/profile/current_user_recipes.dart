@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smakowa/pages/home/recipe_detail_page.dart';
+import 'package:smakowa/pages/widget/edit_recipe_card.dart';
 import 'package:smakowa/pages/widget/recipe_card.dart';
 
 import '../../models/recipe.api.dart';
@@ -58,9 +59,13 @@ class _CurrentUserRecipes extends State<CurrentUserRecipes> {
                   return ListView.builder(
                     itemBuilder: (context, index) {
                       Recipe recipe = snapshot.data?[index];
-                      return GestureDetector(
-                        onTap: () {
-                          // Get.to(RecipeDetailsPage(recipeId: recipe.id,));
+                      return EditRecipeCard(
+                        title: recipe.name,
+                        description: recipe.description,
+                        // cookTime: recipe.time.toString(),
+                        thumbnailUrl: recipe.imageId,
+                        editOnPress: () {},
+                        onPress: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -71,13 +76,7 @@ class _CurrentUserRecipes extends State<CurrentUserRecipes> {
                               },
                             ),
                           );
-                          print(recipe.id);
                         },
-                        child: RecipeCard(
-                          title: recipe.name,
-                          cookTime: recipe.time.toString(),
-                          thumbnailUrl: recipe.imageId,
-                        ),
                       );
                     },
                     itemCount: snapshot.data!.length,
