@@ -14,10 +14,15 @@ import '../utils/endpoints.api.dart';
 
 class RecipeApi {
   Future<List<Recipe>> getRecipe(String url) async {
+    final token = await UserData.getUserToken();
     final response = await http.get(
-      Uri.parse(
-        url,
-      ),
+      Uri.parse(url),
+      // headers: {
+      //   //is save to send token i get?
+
+      //   HttpHeaders.acceptHeader: 'text/plain',
+      //   if (token != null) HttpHeaders.authorizationHeader: 'Bearer ${token}',
+      // },
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -34,6 +39,37 @@ class RecipeApi {
 
       return recipe;
     } else {
+      print(jsonDecode(response.body)['message']);
+      throw Exception('Failed to load recipes');
+    }
+  }
+
+  Future<List<Recipe>> getCurrentUSerRecipe(String url) async {
+    final token = await UserData.getUserToken();
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        //is save to send token i get?
+        HttpHeaders.acceptHeader: 'text/plain',
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      final List<Recipe> recipe = [];
+
+      for (var i = 0; i < data['content'].length; i++) {
+        final entry = data['content'][i];
+
+        recipe.add(
+          Recipe.fromJson(entry),
+        );
+      }
+
+      return recipe;
+    } else {
+      print(jsonDecode(response.body)['message']);
       throw Exception('Failed to load recipes');
     }
   }

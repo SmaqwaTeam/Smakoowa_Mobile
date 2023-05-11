@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smakowa/models/auth/user_data.dart';
+import 'package:smakowa/pages/favorite/favorite_recipe_list.dart';
+import 'package:smakowa/pages/favorite/no_login_fav_page.dart';
 import 'package:smakowa/pages/home/recipe_detail_page.dart';
 import 'package:smakowa/pages/test_routing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,28 +14,31 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  final Future<SharedPreferences> _userData = SharedPreferences.getInstance();
+  Widget? page;
+
+  Future<void> canAccces() async {
+    bool? isLogin = await UserData.isLogin();
+    if (isLogin) {
+      setState(() {
+        page = const FavoriteRecipeList();
+      });
+    } else {
+      setState(() {
+        page = const NoLoginUserPage();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    canAccces();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          const Text("All what you like"),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return TestPage();
-                  },
-                ),
-              );
-            },
-            child: const Text('Testing page '),
-          ),
-        ],
-      ),
+    return Scaffold(
+      body: page,
     );
   }
 }
