@@ -45,7 +45,7 @@ class RecipeDeatil {
   final String description;
   // final List<int> tagsId;
   final int categoryId;
-  // final String creator;
+  final String creator;
   final List<Ingredients> ingredients;
   final List<Instructions> instructions;
   // final Data createdAt;
@@ -62,6 +62,7 @@ class RecipeDeatil {
     required this.ingredients,
     required this.instructions,
     required this.likeCount,
+    required this.creator,
   });
 
   factory RecipeDeatil.fromJson(
@@ -82,6 +83,7 @@ class RecipeDeatil {
       likeCount: likeCount,
       ingredients: ingredients,
       instructions: instructions,
+      creator: json['creatorUsername'],
     );
   }
 }

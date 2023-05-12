@@ -121,9 +121,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Tag'),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
+                          const SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -139,9 +137,11 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 15.0,
+                          const SizedBox(height: 15.0),
+                          Text(
+                            recipe.description,
                           ),
+                          const SizedBox(height: 20.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -155,7 +155,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                               IconText(
                                 icon: Icons.person,
-                                text: ' person',
+                                text: recipe.creator,
                               ),
                               IconText(
                                 icon: Icons.favorite,
@@ -163,15 +163,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            recipe.description,
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
+                          const SizedBox(height: 10.0),
                           const Divider(
                             thickness: 0.3,
                             color: Colors.black54,
