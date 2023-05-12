@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smakowa/models/like_recipe.api.dart';
 import 'package:smakowa/models/recipe.api.dart';
 
 import '../../models/recipe.dart';
@@ -133,7 +134,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                                   color: Colors.black54,
                                 ),
                                 onTap: () {
-                                  print('My fav');
+                                  LikeRecipe().likeRecipe(recipe.id);
                                 },
                               ),
                             ],
