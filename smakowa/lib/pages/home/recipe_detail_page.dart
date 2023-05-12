@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smakowa/models/like_recipe.api.dart';
 import 'package:smakowa/models/recipe.api.dart';
 
 import '../../models/recipe.dart';
+import '../../utils/endpoints.api.dart';
 import '../widget/icon_text_detail_recipe.dart';
 import '../widget/recipe_details_list.dart';
 
@@ -55,7 +57,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                         Image.network(
                           recipe.imageId == null
                               ? 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'
-                              : 'https://smakoowaapi.azurewebsites.net/api/Images/GetRecipeImage/${recipe.imageId}',
+                              : '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/${recipe.imageId}',
                           height: 250.0,
                           width: double.infinity,
                           fit: BoxFit.cover,
@@ -119,9 +121,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Tag'),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
+                          const SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -132,14 +132,16 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                                   color: Colors.black54,
                                 ),
                                 onTap: () {
-                                  print('My fav');
+                                  LikeRecipe().likeRecipe(recipe.id);
                                 },
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 15.0,
+                          const SizedBox(height: 15.0),
+                          Text(
+                            recipe.description,
                           ),
+                          const SizedBox(height: 20.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -153,7 +155,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                               IconText(
                                 icon: Icons.person,
-                                text: ' person',
+                                text: recipe.creator,
                               ),
                               IconText(
                                 icon: Icons.favorite,
@@ -161,15 +163,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            recipe.description,
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
+                          const SizedBox(height: 10.0),
                           const Divider(
                             thickness: 0.3,
                             color: Colors.black54,
