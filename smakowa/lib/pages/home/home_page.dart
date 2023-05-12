@@ -16,8 +16,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Recipe>> futureRecipes;
+  int recipeCount = 20;
 
-  final String endpoint = ApiEndPoints.baseUrl + '/api/Recipes/GetAll';
+  late String endpoint =
+      '${ApiEndPoints.baseUrl}/api/Recipes/GetAll?recipeCount=$recipeCount';
 
   @override
   void initState() {
@@ -31,6 +33,14 @@ class _HomePageState extends State<HomePage> {
     final result = await RecipeApi().getRecipe(endpoint);
     result.forEach((element) {
       print(element.name);
+    });
+  }
+
+  loadMoreRecipes() async {
+    setState(() {
+      recipeCount += 5;
+      endpoint =
+          '${ApiEndPoints.baseUrl}/api/Recipes/GetAll?recipeCount=$recipeCount';
     });
   }
 
