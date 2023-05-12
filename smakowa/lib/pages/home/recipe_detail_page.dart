@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:smakowa/models/recipe.api.dart';
 
 import '../../models/recipe.dart';
+import '../../utils/endpoints.api.dart';
 import '../widget/icon_text_detail_recipe.dart';
 import '../widget/recipe_details_list.dart';
 
@@ -55,7 +56,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                         Image.network(
                           recipe.imageId == null
                               ? 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'
-                              : 'https://smakoowaapi.azurewebsites.net/api/Images/GetRecipeImage/${recipe.imageId}',
+                              : '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/${recipe.imageId}',
                           height: 250.0,
                           width: double.infinity,
                           fit: BoxFit.cover,

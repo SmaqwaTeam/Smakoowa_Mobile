@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/endpoints.api.dart';
+
 class EditRecipeCard extends StatelessWidget {
   final String title;
   final String description;
@@ -45,7 +47,7 @@ class EditRecipeCard extends StatelessWidget {
             fit: BoxFit.cover,
             image: thumbnailUrl != null
                 ? NetworkImage(
-                    'https://smakoowaapi.azurewebsites.net/api/Images/GetRecipeImage/$thumbnailUrl')
+                    '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/$thumbnailUrl')
                 : const NetworkImage(
                     'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'),
           ),
