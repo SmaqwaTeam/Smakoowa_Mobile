@@ -1,8 +1,9 @@
 //SEARCH BAR
 import 'package:flutter/material.dart';
+import 'package:smakowa/pages/home/search_recip_view.dart';
 
 class MySearchDelaegate extends SearchDelegate {
-  List<String> suggestions = [
+  List<String> searchResults = [
     'chicken',
     'rice',
     'packcake',
@@ -36,12 +37,12 @@ class MySearchDelaegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> suggestions = [
-      'chicken',
-      'rice',
-      'packcake',
-      'meat',
-    ];
+    List<String> suggestions = searchResults.where((searchResults) {
+      final result = searchResults.toLowerCase();
+      final input = query.toLowerCase();
+
+      return input.contains(input);
+    }).toList();
 
     return ListView.builder(
       itemCount: suggestions.length,
@@ -60,9 +61,7 @@ class MySearchDelaegate extends SearchDelegate {
   }
 
   @override
-  Widget buildResults(BuildContext context) => Center(
-        child: Text(
-          query,
-        ),
+  Widget buildResults(BuildContext context) => SearchResultPage(
+        keyWord: query,
       );
 }
