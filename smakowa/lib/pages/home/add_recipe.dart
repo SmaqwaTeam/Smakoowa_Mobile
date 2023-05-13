@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smakowa/models/recipe.api.dart';
 import 'package:smakowa/models/recipe.dart';
+import 'package:smakowa/models/tags.dart';
+
+import '../../models/category.api.dart';
+import '../../models/category.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+
+import '../../models/tags.api.dart';
 
 class AddRecipe extends StatefulWidget {
   const AddRecipe({super.key});
@@ -14,16 +21,27 @@ class _AddRecipeState extends State<AddRecipe> {
   final _formKey = GlobalKey<FormState>();
   List<String> ingredints = [];
   List<String> instrictions = [];
+  List<int> tagsConfirmList = [];
+  late Future<List<Categories>> futureCategories;
+  late Future<List<Tags>> futureTags;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController _ingrednitsController = TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
   final TextEditingController tagController = TextEditingController();
-  final TextEditingController categoryControler = TextEditingController();
+
+  int catergoryId = 0;
 
   double _currentServingsTierValue = 1;
   double _currentTimeToMake = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    futureCategories = CategoryApiList().getCategory();
+    futureTags = TagsApiList().getTags();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,20 +74,78 @@ class _AddRecipeState extends State<AddRecipe> {
                   hintText: 'Describe your recipe',
                 ),
                 const SizedBox(height: 15),
-                CustomFormTextField(
-                  ingrednitsController: categoryControler,
-                  labelText: 'Category',
-                  hintText: 'tag',
+                Row(
+                  children: [
+                    const Text('Select Category'),
+                    const SizedBox(width: 15),
+                    SizedBox(
+                      width: 350,
+                      child: FutureBuilder<List<Categories>>(
+                          future: futureCategories,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              List<Categories> categoryDropDown = snapshot.data;
+                              return DropdownButtonFormField(
+                                value: categoryDropDown.first.id,
+                                items: categoryDropDown
+                                    .map((item) => DropdownMenuItem(
+                                          value: item.id,
+                                          child: Text(item.categoryName),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    catergoryId = value!;
+                                  });
+                                },
+                              );
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                          }),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 15),
-                CustomFormTextField(
-                  ingrednitsController: tagController,
-                  labelText: 'Tags',
-                  hintText: 'tag',
+                Row(
+                  children: [
+                    const Text(
+                      'Select Tags  ',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(width: 20),
+                    SizedBox(
+                      width: 350,
+                      child: FutureBuilder(
+                        future: futureTags,
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            List<Tags> tagDropDown = snapshot.data;
+                            return MultiSelectDialogField(
+                              items: tagDropDown
+                                  .map((item) => MultiSelectItem(
+                                        item.id,
+                                        item.tagName,
+                                      ))
+                                  .toList(),
+                              listType: MultiSelectListType.CHIP,
+                              onConfirm: (value) {
+                                setState(() {
+                                  tagsConfirmList = value;
+                                });
+                              },
+                            );
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.only(
-                    left: 15,
                     right: 15,
                     bottom: 5,
                   ),
@@ -83,14 +159,12 @@ class _AddRecipeState extends State<AddRecipe> {
                             //double type!!!
                             value: _currentServingsTierValue,
                             max: 4,
-                            min: 1,
-                            divisions: 3,
+                            min: 0,
+                            divisions: 4,
                             label: _currentServingsTierValue.round().toString(),
                             onChanged: (double value) {
                               setState(() {
                                 _currentServingsTierValue = value;
-                                print('slider :' +
-                                    _currentServingsTierValue.toString());
                               });
                             }),
                       ),
@@ -99,7 +173,6 @@ class _AddRecipeState extends State<AddRecipe> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    left: 15,
                     right: 15,
                     bottom: 5,
                   ),
@@ -113,8 +186,8 @@ class _AddRecipeState extends State<AddRecipe> {
                             //double type!!!
                             value: _currentTimeToMake,
                             max: 4,
-                            min: 1,
-                            divisions: 3,
+                            min: 0,
+                            divisions: 4,
                             label: _currentTimeToMake.round().toString(),
                             onChanged: (double value) {
                               setState(() {
@@ -293,13 +366,14 @@ class _AddRecipeState extends State<AddRecipe> {
                         const SnackBar(content: Text('Processing Data')),
                       );
                       try {
+                        print(tagsConfirmList[0]);
                         var newRecipe = createRecipeAddObject(
                           nameController.text,
                           descriptionController.text,
                           ingredints,
                           instrictions,
-                          tagController.text,
-                          categoryControler.text,
+                          tagsConfirmList,
+                          catergoryId,
                           _currentServingsTierValue,
                           _currentTimeToMake,
                         );
@@ -340,14 +414,14 @@ RecipeAdd createRecipeAddObject(
   descrption,
   List<String> ingredients,
   List<String> instructions,
-  String tag,
-  category,
+  List<int> tags,
+  int category,
   double servings,
   timeTomake,
 ) {
   List<Ingredients> ingredientsObjectList = [];
   List<Instructions> instructionObjectList = [];
-  List<int> tagList = [int.parse(tag)];
+
   const int group = 1;
   int position = 1;
 
@@ -364,13 +438,14 @@ RecipeAdd createRecipeAddObject(
     ));
     position++;
   }
+
   return RecipeAdd(
     name: title,
     description: descrption,
     servingsTier: servings.toInt(),
     time: timeTomake.toInt(),
-    categoryId: int.parse(category),
-    tagIds: tagList,
+    categoryId: category,
+    tagIds: tags,
     ingredients: ingredientsObjectList,
     instructions: instructionObjectList,
   );

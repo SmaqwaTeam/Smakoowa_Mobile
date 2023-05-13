@@ -26,4 +26,16 @@ class UserData {
   static Future<void> logOut() async {
     await storage.deleteAll();
   }
+
+  static Future<bool> isLogin() async {
+    final storage = const FlutterSecureStorage();
+
+    var value = await storage.read(key: 'access');
+
+    if (value == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

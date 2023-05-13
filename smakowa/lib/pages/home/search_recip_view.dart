@@ -7,19 +7,22 @@ import '../../models/recipe.api.dart';
 import '../../models/recipe.dart';
 import '../../utils/endpoints.api.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class SearchResultPage extends StatefulWidget {
+  SearchResultPage({super.key, this.keyWord});
+
+  String? keyWord;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SearchResultPage> createState() => _SearchResultPage();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SearchResultPage extends State<SearchResultPage> {
   late Future<List<Recipe>> futureRecipes;
+
   int recipeCount = 20;
 
   late String endpoint =
-      '${ApiEndPoints.baseUrl}/api/Recipes/GetAll?recipeCount=$recipeCount';
+      '${ApiEndPoints.baseUrl}/api/Recipes/SearchRecipesByName?querry=${widget.keyWord}';
 
   @override
   void initState() {
@@ -27,13 +30,6 @@ class _HomePageState extends State<HomePage> {
     // loadRecipe();
 
     futureRecipes = RecipeApi().getRecipe(endpoint);
-  }
-
-  loadRecipe() async {
-    final result = await RecipeApi().getRecipe(endpoint);
-    result.forEach((element) {
-      print(element.name);
-    });
   }
 
   loadMoreRecipes() async {

@@ -14,11 +14,13 @@ class Recipe {
   final String name;
   final String time;
   final String? imageId;
+  final String description;
 
   Recipe({
     required this.id,
     required this.name,
     required this.time,
+    required this.description,
     this.imageId,
   });
 
@@ -26,11 +28,11 @@ class Recipe {
     int timeValue = json['timeToMakeTier'];
 
     return Recipe(
-      id: json['id'],
-      name: json['name'],
-      time: timeToServe[timeValue],
-      imageId: json['imageId'],
-    );
+        id: json['id'],
+        name: json['name'],
+        time: timeToServe[timeValue],
+        imageId: json['imageId'],
+        description: json['description']);
   }
 }
 
@@ -43,11 +45,11 @@ class RecipeDeatil {
   final String description;
   // final List<int> tagsId;
   final int categoryId;
-  // final String creator;
+  final String creator;
   final List<Ingredients> ingredients;
   final List<Instructions> instructions;
   // final Data createdAt;
-  // final int likeCount;
+  final int likeCount;
 
   RecipeDeatil({
     required this.id,
@@ -59,11 +61,15 @@ class RecipeDeatil {
     required this.categoryId,
     required this.ingredients,
     required this.instructions,
-    // required this.likeCount,
+    required this.likeCount,
+    required this.creator,
   });
 
-  factory RecipeDeatil.fromJson(Map<String, dynamic> json,
-      List<Ingredients> ingredients, List<Instructions> instructions) {
+  factory RecipeDeatil.fromJson(
+      Map<String, dynamic> json,
+      List<Ingredients> ingredients,
+      List<Instructions> instructions,
+      int likeCount) {
     int timeValue = json['timeToMakeTier'];
 
     return RecipeDeatil(
@@ -74,8 +80,10 @@ class RecipeDeatil {
       time: timeToServe[timeValue],
       description: json['description'],
       categoryId: json['categoryId'],
+      likeCount: likeCount,
       ingredients: ingredients,
       instructions: instructions,
+      creator: json['creatorUsername'],
     );
   }
 }

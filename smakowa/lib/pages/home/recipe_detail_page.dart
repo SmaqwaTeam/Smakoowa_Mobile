@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smakowa/models/like_recipe.api.dart';
 import 'package:smakowa/models/recipe.api.dart';
 
 import '../../models/recipe.dart';
+import '../../utils/endpoints.api.dart';
 import '../widget/icon_text_detail_recipe.dart';
 import '../widget/recipe_details_list.dart';
 
 class RecipeDetailsPage extends StatefulWidget {
-  const RecipeDetailsPage({super.key, required this.recipeId});
+  const RecipeDetailsPage(
+      {super.key, required this.recipeId, this.deleteViewAccess});
   final int recipeId;
+  final bool? deleteViewAccess;
 
   @override
   State<RecipeDetailsPage> createState() => _RecipeDetailsPageState();
@@ -55,7 +59,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                         Image.network(
                           recipe.imageId == null
                               ? 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'
-                              : 'https://smakoowaapi.azurewebsites.net/api/Images/GetRecipeImage/${recipe.imageId}',
+                              : '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/${recipe.imageId}',
                           height: 250.0,
                           width: double.infinity,
                           fit: BoxFit.cover,
@@ -119,9 +123,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Tag'),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
+                          const SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -132,14 +134,16 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                                   color: Colors.black54,
                                 ),
                                 onTap: () {
-                                  print('My fav');
+                                  LikeRecipe().likeRecipe(recipe.id);
                                 },
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 15.0,
+                          const SizedBox(height: 15.0),
+                          Text(
+                            recipe.description,
                           ),
+                          const SizedBox(height: 20.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -153,19 +157,15 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                               IconText(
                                 icon: Icons.person,
-                                text: ' person',
+                                text: recipe.creator,
+                              ),
+                              IconText(
+                                icon: Icons.favorite,
+                                text: recipe.likeCount.toString(),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            recipe.description,
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
+                          const SizedBox(height: 10.0),
                           const Divider(
                             thickness: 0.3,
                             color: Colors.black54,
@@ -176,6 +176,55 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           RecipeInstructionList(
                             recipeInfo: recipe.instructions,
                           ),
+                          const SizedBox(height: 30),
+                          widget.deleteViewAccess != null
+                              ? Center(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      padding: const EdgeInsets.only(
+                                        top: 18,
+                                        bottom: 18,
+                                        left: 50,
+                                        right: 50,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: Get.context!,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text("Warring"),
+                                              content: Text(
+                                                  'Are you sure to delete this recipe?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    RecipeApi().deleteRecipe(
+                                                        recipe.id);
+                                                  },
+                                                  child: const Text('Yes'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('No'),
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: const Text(
+                                      'Delete',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text(''),
                         ],
                       ),
                     ),

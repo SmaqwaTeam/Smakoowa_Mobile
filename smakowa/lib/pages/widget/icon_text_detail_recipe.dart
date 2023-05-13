@@ -15,15 +15,15 @@ class IconText extends StatelessWidget {
       children: [
         Icon(
           icon,
-          size: 15.0,
+          size: 18.0,
           color: Colors.orange,
         ),
-        SizedBox(
+        const SizedBox(
           width: 5.0,
         ),
         Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black54,
           ),
         ),

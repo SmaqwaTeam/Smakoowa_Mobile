@@ -1,18 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:smakowa/pages/home/add_recipe.dart';
 import 'package:smakowa/pages/widget/category_list.dart';
 import 'package:smakowa/pages/favorite/favorite_page.dart';
 import 'package:smakowa/pages/home/home_page.dart';
 import 'package:smakowa/pages/profile/profile_page.dart';
 import 'package:smakowa/pages/settings_page.dart';
-import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:smakowa/pages/tags_list.dart';
+import 'package:smakowa/pages/widget/custom_list_tile.dart';
 import 'package:smakowa/utils/search_bar.dart';
 import 'package:get/get.dart';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() {
   //android certificate fix not for deploy
@@ -71,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Smakoowa'),
+        title: const Text('Smakoowa'),
         actions: [
           IconButton(
             onPressed: () {
@@ -80,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 delegate: MySearchDelaegate(),
               );
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
             ),
           )
@@ -118,24 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-//ADD BUTTON
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return const AddRecipe();
-              },
-            ),
-          );
-        },
-        tooltip: 'Add',
-        child: const Icon(
-          Icons.add,
-          color: Colors.white70,
-        ),
-      ),
+
 //DRAWER
       drawer: Drawer(
           child: ListView(
@@ -144,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const DrawerHeader(
             child: Text(''),
           ),
-          DrawerListTile(
+          CustomDrawerListTile(
             title: 'Categories',
             icon: Icons.category_outlined,
             onPress: () {
@@ -161,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // Divider(
           //   color: Colors.grey,
           // ),
-          DrawerListTile(
+          CustomDrawerListTile(
             title: 'Tags',
             icon: Icons.tag,
             onPress: () {
@@ -175,43 +155,8 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
-          DrawerListTile(
-              title: 'Notifications',
-              icon: Icons.notifications_none_sharp,
-              onPress: () {}),
         ],
-      )), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
-class DrawerListTile extends StatelessWidget {
-  const DrawerListTile({
-    super.key,
-    required this.title,
-    required this.icon,
-    required this.onPress,
-  });
-  final String title;
-  final IconData icon;
-  final VoidCallback onPress;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: Colors.orange,
-        size: 25,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 18,
-        ),
-      ),
-      onTap: onPress,
-      // Navigator.pop(context);
+      )),
     );
   }
 }

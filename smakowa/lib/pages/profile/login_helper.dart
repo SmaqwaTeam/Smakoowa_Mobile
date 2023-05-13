@@ -18,10 +18,6 @@ class ProfileHelpRoute extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // const Text('Profile Page',
-              //     style: TextStyle(
-              //       fontSize: 40,
-              //     )),
               const SizedBox(height: 50),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
