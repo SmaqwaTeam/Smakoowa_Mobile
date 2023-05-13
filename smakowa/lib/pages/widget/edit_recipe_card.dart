@@ -61,6 +61,7 @@ class EditRecipeCard extends StatelessWidget {
         onPressed: editOnPress,
       ),
       onTap: onPress,
+      onLongPress: () {},
     );
   }
 }

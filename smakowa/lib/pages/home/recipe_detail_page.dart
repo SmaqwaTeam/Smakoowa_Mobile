@@ -9,8 +9,9 @@ import '../widget/icon_text_detail_recipe.dart';
 import '../widget/recipe_details_list.dart';
 
 class RecipeDetailsPage extends StatefulWidget {
-  const RecipeDetailsPage({super.key, required this.recipeId});
+  const RecipeDetailsPage({super.key, required this.recipeId, this.isLogin});
   final int recipeId;
+  final bool? isLogin;
 
   @override
   State<RecipeDetailsPage> createState() => _RecipeDetailsPageState();
@@ -173,6 +174,28 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           ),
                           RecipeInstructionList(
                             recipeInfo: recipe.instructions,
+                          ),
+                          const SizedBox(height: 30),
+                          Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                padding: const EdgeInsets.only(
+                                  top: 18,
+                                  bottom: 18,
+                                  left: 50,
+                                  right: 50,
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text(
+                                'Delete',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
