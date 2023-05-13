@@ -73,7 +73,7 @@ class _CurrentUserRecipes extends State<CurrentUserRecipes> {
                                 final userLogged = true;
                                 return RecipeDetailsPage(
                                   recipeId: recipe.id,
-                                  isLogin: userLogged,
+                                  deleteViewAccess: userLogged,
                                 );
                               },
                             ),
