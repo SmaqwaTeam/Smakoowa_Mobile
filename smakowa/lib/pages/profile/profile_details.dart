@@ -3,9 +3,9 @@ import 'package:smakowa/pages/profile/current_user_recipes.dart';
 import 'package:get/get.dart';
 import 'package:smakowa/main.dart';
 import 'package:smakowa/models/auth/user_data.dart';
-import 'package:smakowa/pages/widget/edit_recipe_card.dart';
 
-import '../widget/profile_list_menu.dart';
+import '../home/add_recipe.dart';
+import '../widget/custom_list_tile.dart';
 
 class ProfileDetail extends StatefulWidget {
   ProfileDetail({super.key});
@@ -46,14 +46,12 @@ class _ProfileDetailState extends State<ProfileDetail> {
               Center(
                 child: CircleAvatar(
                   backgroundColor: Colors.grey[200],
-                  // backgroundImage: AssetImage('assets/user.jpeg'),
+                  radius: 50,
                   child: Icon(
                     Icons.person,
                     size: 50,
                     color: Colors.grey[600],
                   ),
-
-                  radius: 50,
                 ),
               ),
               const Divider(
@@ -90,7 +88,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 30),
-              ProfileListMenu(
+              CustomDrawerListTile(
                 title: 'My recipes',
                 icon: Icons.receipt_long_rounded,
                 onPress: () {
@@ -106,9 +104,9 @@ class _ProfileDetailState extends State<ProfileDetail> {
               const SizedBox(
                 height: 15,
               ),
-              ProfileListMenu(
-                title: 'Edit profile',
-                icon: Icons.edit,
+              CustomDrawerListTile(
+                title: 'Liked tags',
+                icon: Icons.tag,
                 onPress: () {},
               ),
               //test
@@ -116,7 +114,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
               const SizedBox(
                 height: 50,
               ),
-              ProfileListMenu(
+              CustomDrawerListTile(
                 title: 'Logout',
                 icon: Icons.logout,
                 onPress: () {
@@ -137,6 +135,23 @@ class _ProfileDetailState extends State<ProfileDetail> {
               ),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const AddRecipe();
+              },
+            ),
+          );
+        },
+        tooltip: 'Add',
+        child: const Icon(
+          Icons.add,
+          color: Colors.white70,
         ),
       ),
     );

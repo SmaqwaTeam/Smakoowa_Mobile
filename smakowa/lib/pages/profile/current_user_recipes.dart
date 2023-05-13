@@ -70,8 +70,10 @@ class _CurrentUserRecipes extends State<CurrentUserRecipes> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
+                                final userLogged = true;
                                 return RecipeDetailsPage(
                                   recipeId: recipe.id,
+                                  deleteViewAccess: userLogged,
                                 );
                               },
                             ),

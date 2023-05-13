@@ -9,8 +9,10 @@ import '../widget/icon_text_detail_recipe.dart';
 import '../widget/recipe_details_list.dart';
 
 class RecipeDetailsPage extends StatefulWidget {
-  const RecipeDetailsPage({super.key, required this.recipeId});
+  const RecipeDetailsPage(
+      {super.key, required this.recipeId, this.deleteViewAccess});
   final int recipeId;
+  final bool? deleteViewAccess;
 
   @override
   State<RecipeDetailsPage> createState() => _RecipeDetailsPageState();
@@ -174,6 +176,55 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           RecipeInstructionList(
                             recipeInfo: recipe.instructions,
                           ),
+                          const SizedBox(height: 30),
+                          widget.deleteViewAccess != null
+                              ? Center(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      padding: const EdgeInsets.only(
+                                        top: 18,
+                                        bottom: 18,
+                                        left: 50,
+                                        right: 50,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: Get.context!,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text("Warring"),
+                                              content: Text(
+                                                  'Are you sure to delete this recipe?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    RecipeApi().deleteRecipe(
+                                                        recipe.id);
+                                                  },
+                                                  child: const Text('Yes'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('No'),
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: const Text(
+                                      'Delete',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text(''),
                         ],
                       ),
                     ),

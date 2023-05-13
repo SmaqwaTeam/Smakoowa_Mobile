@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProfileListMenu extends StatelessWidget {
-  const ProfileListMenu({
+class CustomDrawerListTile extends StatelessWidget {
+  const CustomDrawerListTile({
     super.key,
     required this.title,
     required this.icon,
@@ -31,7 +31,7 @@ class ProfileListMenu extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(
-          fontSize: 20,
+          fontSize: 18,
         ),
       ),
     );
