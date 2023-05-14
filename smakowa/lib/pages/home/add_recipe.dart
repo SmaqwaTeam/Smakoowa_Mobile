@@ -377,7 +377,7 @@ class _AddRecipeState extends State<AddRecipe> {
                           _currentServingsTierValue,
                           _currentTimeToMake,
                         );
-                        RecipeSendApi().postRecipe(newRecipe);
+                        RecipeDetailsApi().postRecipe(newRecipe);
                       } catch (e) {
                         print(e);
                       }

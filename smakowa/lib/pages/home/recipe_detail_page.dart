@@ -26,16 +26,14 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
 
   @override
   void initState() {
-    futureRecipeDetail =
-        RecipeDetailsApi(id: widget.recipeId).getRecipeDetail();
+    futureRecipeDetail = RecipeDetailsApi().getRecipeDetail(widget.recipeId);
 
     super.initState();
     loadRecipeDetails();
   }
 
   loadRecipeDetails() async {
-    final result =
-        await RecipeDetailsApi(id: widget.recipeId).getRecipeDetail();
+    final result = await RecipeDetailsApi().getRecipeDetail(widget.recipeId);
     // print(result is RecipeDeatil ? 'yes' : 'no');
     // print(result.description);
 

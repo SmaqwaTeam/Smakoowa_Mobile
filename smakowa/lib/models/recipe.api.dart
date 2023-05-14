@@ -17,12 +17,6 @@ class RecipeApi {
     final token = await UserData.getUserToken();
     final response = await http.get(
       Uri.parse(url),
-      // headers: {
-      //   //is save to send token i get?
-
-      //   HttpHeaders.acceptHeader: 'text/plain',
-      //   if (token != null) HttpHeaders.authorizationHeader: 'Bearer ${token}',
-      // },
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -126,13 +120,7 @@ class RecipeApi {
 }
 
 class RecipeDetailsApi {
-  final int id;
-
-  RecipeDetailsApi({
-    required this.id,
-  });
-
-  Future<RecipeDeatil> getRecipeDetail() async {
+  Future<RecipeDeatil> getRecipeDetail(int id) async {
     final response = await http.get(
       Uri.parse(
         ApiEndPoints.baseUrl + '/api/Recipes/GetByIdDetailed/${id}',
@@ -145,14 +133,6 @@ class RecipeDetailsApi {
 
       final entry = json['content'];
       final likeCount = json['content']['likes'].length;
-      // List<String> ing = [];
-      // for (var i = 0; i < json['content']['ingredients'].length; i++) {
-      //   final temp = json['content']['ingredients'][i]['name'];
-
-      //   ingList.add(
-      //     temp,
-      //   );
-      // }
 
       final ingrediendts = (json['content']['ingredients'] as List)
           .map((e) => Ingredients.fromJson(e))
@@ -169,15 +149,12 @@ class RecipeDetailsApi {
       final recipeDetail = RecipeDeatil.fromJson(
           entry, ingrediendts, instructions, likeCount, comments);
 
-      // print('like ' + likeCount.toString());
       return recipeDetail;
     } else {
       throw Exception('Failed to load recipe');
     }
   }
-}
 
-class RecipeSendApi {
   Future<void> postRecipe(RecipeAdd recipe) async {
     Map data = recipe.toJson();
 
@@ -232,3 +209,5 @@ class RecipeSendApi {
     }
   }
 }
+
+class RecipeSendApi {}
