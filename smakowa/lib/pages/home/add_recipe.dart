@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:smakowa/models/recipe.api.dart';
 import 'package:smakowa/models/recipe.dart';
@@ -19,8 +20,8 @@ class AddRecipe extends StatefulWidget {
 
 class _AddRecipeState extends State<AddRecipe> {
   final _formKey = GlobalKey<FormState>();
-  List<String> ingredints = [];
-  List<String> instrictions = [];
+  List<String> ingredintsList = [];
+  List<String> instrictionsList = [];
   List<int> tagsConfirmList = [];
   late Future<List<Categories>> futureCategories;
   late Future<List<Tags>> futureTags;
@@ -31,7 +32,7 @@ class _AddRecipeState extends State<AddRecipe> {
   final TextEditingController _instructionsController = TextEditingController();
   final TextEditingController tagController = TextEditingController();
 
-  int catergoryId = 0;
+  int catergoryId = 1;
 
   double _currentServingsTierValue = 1;
   double _currentTimeToMake = 1;
@@ -63,13 +64,13 @@ class _AddRecipeState extends State<AddRecipe> {
               children: [
                 const SizedBox(height: 30),
                 CustomFormTextField(
-                  ingrednitsController: nameController,
+                  textControler: nameController,
                   labelText: 'Title',
                   hintText: 'Enter title',
                 ),
                 const SizedBox(height: 15),
                 CustomFormTextField(
-                  ingrednitsController: descriptionController,
+                  textControler: descriptionController,
                   labelText: 'Description',
                   hintText: 'Describe your recipe',
                 ),
@@ -152,7 +153,7 @@ class _AddRecipeState extends State<AddRecipe> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Serving tier"),
+                      Text("Servings tier "),
                       SizedBox(
                         width: 200,
                         child: Slider(
@@ -198,7 +199,7 @@ class _AddRecipeState extends State<AddRecipe> {
                     ],
                   ),
                 ),
-                ingredints.isEmpty
+                ingredintsList.isEmpty
                     ? Text('')
                     : const Text(
                         'Ingredients',
@@ -208,77 +209,12 @@ class _AddRecipeState extends State<AddRecipe> {
                         ),
                       ),
                 SafeArea(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: ingredints.length,
-                      itemBuilder: (_, index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 12),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: const Color(0x33FF5C4D)),
-                                child: Text(ingredints[index]),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                              width: 30,
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      ingredints.remove(ingredints[index]);
-                                    });
-                                  },
-                                  child: Text('X')),
-                            ),
-                          ],
-                        );
-                      }),
+                  child: ingredientsPreviewList(ingredintsList),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        bottom: 0,
-                      ),
-                      child: SizedBox(
-                        width: 200,
-                        height: 50,
-                        child: TextFormField(
-                          controller: _ingrednitsController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Ingredient',
-                            hintText: 'Enter ingredient',
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            ingredints.add(_ingrednitsController.text);
-                            _ingrednitsController.text = "";
-                          });
-                        },
-                        child: Text('Add'),
-                      ),
-                    ),
-                  ],
-                ),
+                rowTextFormInput('Ingredient', 'Enter ingredient',
+                    _ingrednitsController, ingredintsList),
                 const SizedBox(height: 10),
-                instrictions.isEmpty
+                instrictionsList.isEmpty
                     ? Text('')
                     : const Text(
                         'Instructions',
@@ -288,75 +224,13 @@ class _AddRecipeState extends State<AddRecipe> {
                         ),
                       ),
                 SafeArea(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: instrictions.length,
-                      itemBuilder: (_, index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 12),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: const Color(0x33FF5C4D)),
-                                child: Text(instrictions[index]),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                              width: 30,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    instrictions.remove(instrictions[index]);
-                                  });
-                                },
-                                child: Text('X'),
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
+                  child: ingredientsPreviewList(instrictionsList),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        bottom: 0,
-                      ),
-                      child: SizedBox(
-                        width: 300,
-                        height: 50,
-                        child: TextFormField(
-                          controller: _instructionsController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Instruction',
-                            hintText: 'Enter Instruction',
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            instrictions.add(_instructionsController.text);
-                            _instructionsController.text = "";
-                          });
-                        },
-                        child: Text('Add'),
-                      ),
-                    ),
-                  ],
+                rowTextFormInput(
+                  'Instruction',
+                  'Enter Instruction',
+                  _instructionsController,
+                  instrictionsList,
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
@@ -370,8 +244,8 @@ class _AddRecipeState extends State<AddRecipe> {
                         var newRecipe = createRecipeAddObject(
                           nameController.text,
                           descriptionController.text,
-                          ingredints,
-                          instrictions,
+                          ingredintsList,
+                          instrictionsList,
                           tagsConfirmList,
                           catergoryId,
                           _currentServingsTierValue,
@@ -406,6 +280,88 @@ class _AddRecipeState extends State<AddRecipe> {
         ),
       ),
     );
+  }
+
+  Row rowTextFormInput(String label, hinit,
+      TextEditingController inputControler, List<dynamic> list) {
+    return Row(
+      children: [
+        Text(
+          label,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 15,
+            right: 15,
+            bottom: 0,
+          ),
+          child: SizedBox(
+            width: 300,
+            height: 50,
+            child: TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(50),
+              ],
+              controller: inputControler,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Input ',
+                hintText: '',
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              setState(() {
+                list.add(inputControler.text);
+                inputControler.text = "";
+              });
+            },
+            child: Text(
+              'Add',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  ListView ingredientsPreviewList(List<dynamic> list) {
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: list.length,
+        itemBuilder: (_, index) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: const Color(0x33FF5C4D)),
+                  child: Text(list[index]),
+                ),
+              ),
+              SizedBox(
+                height: 25,
+                width: 30,
+                child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        list.remove(list[index]);
+                      });
+                    },
+                    child: Text('X')),
+              ),
+            ],
+          );
+        });
   }
 }
 
@@ -454,19 +410,19 @@ RecipeAdd createRecipeAddObject(
 class CustomFormTextField extends StatelessWidget {
   const CustomFormTextField(
       {super.key,
-      required TextEditingController ingrednitsController,
+      required TextEditingController textControler,
       required this.labelText,
       required this.hintText})
-      : _ingrednitsController = ingrednitsController;
+      : _inputController = textControler;
 
-  final TextEditingController _ingrednitsController;
+  final TextEditingController _inputController;
   final String labelText;
   final String hintText;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: _ingrednitsController,
+      controller: _inputController,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Enter ${labelText}';
