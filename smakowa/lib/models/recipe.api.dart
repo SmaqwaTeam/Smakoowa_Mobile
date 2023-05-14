@@ -162,8 +162,12 @@ class RecipeDetailsApi {
           .map((e) => Instructions.fromJson(e))
           .toList();
 
-      final recipeDetail =
-          RecipeDeatil.fromJson(entry, ingrediendts, instructions, likeCount);
+      final comments = (json['content']['recipeComments'] as List)
+          .map((e) => Comment.fromJson(e))
+          .toList();
+
+      final recipeDetail = RecipeDeatil.fromJson(
+          entry, ingrediendts, instructions, likeCount, comments);
 
       // print('like ' + likeCount.toString());
       return recipeDetail;

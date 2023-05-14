@@ -9,6 +9,7 @@ class EditRecipeCard extends StatelessWidget {
   final String? thumbnailUrl;
   final VoidCallback onPress;
   final VoidCallback editOnPress;
+
   const EditRecipeCard({
     super.key,
     required this.description,

@@ -43,11 +43,11 @@ class RecipeDeatil {
   final int servingsTier;
   final String? imageId;
   final String description;
-  // final List<int> tagsId;
   final int categoryId;
   final String creator;
   final List<Ingredients> ingredients;
   final List<Instructions> instructions;
+  final List<Comment> comments;
   // final Data createdAt;
   final int likeCount;
 
@@ -63,13 +63,16 @@ class RecipeDeatil {
     required this.instructions,
     required this.likeCount,
     required this.creator,
+    required this.comments,
   });
 
   factory RecipeDeatil.fromJson(
-      Map<String, dynamic> json,
-      List<Ingredients> ingredients,
-      List<Instructions> instructions,
-      int likeCount) {
+    Map<String, dynamic> json,
+    List<Ingredients> ingredients,
+    List<Instructions> instructions,
+    int likeCount,
+    List<Comment> comments,
+  ) {
     int timeValue = json['timeToMakeTier'];
 
     return RecipeDeatil(
@@ -84,6 +87,7 @@ class RecipeDeatil {
       ingredients: ingredients,
       instructions: instructions,
       creator: json['creatorUsername'],
+      comments: comments,
     );
   }
 }
@@ -183,5 +187,32 @@ class Instructions {
   }
   String getName() {
     return content;
+  }
+}
+
+class Comment {
+  final int id;
+  final String content;
+  final int likeCount;
+  final String createdAt;
+
+  Comment({
+    required this.id,
+    required this.content,
+    required this.likeCount,
+    required this.createdAt,
+  });
+
+  Map<String, dynamic> toJson() => {
+        "content": content,
+      };
+
+  factory Comment.fromJson(Map<String, dynamic> json) {
+    return Comment(
+      id: json['id'],
+      content: json['content'],
+      likeCount: json['likeCount'],
+      createdAt: json['createdAt'],
+    );
   }
 }
