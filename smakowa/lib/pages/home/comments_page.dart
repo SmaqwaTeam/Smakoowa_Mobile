@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smakowa/models/auth/user_data.dart';
 import 'package:smakowa/models/likes.api.dart';
 import 'package:smakowa/models/recipe.dart';
 import 'package:smakowa/pages/widget/elevation_button_custom.dart';
@@ -7,12 +8,33 @@ import 'package:smakowa/pages/widget/elevation_button_custom.dart';
 import '../widget/icon_text_detail_recipe.dart';
 import 'comment_add.dart';
 
-class CommentsPage extends StatelessWidget {
+class CommentsPage extends StatefulWidget {
   const CommentsPage(
       {super.key, required this.comments, required this.recipeId});
 
   final List<Comment> comments;
   final int recipeId;
+
+  @override
+  State<CommentsPage> createState() => _CommentsPageState();
+}
+
+class _CommentsPageState extends State<CommentsPage> {
+  late int? currentUserId = null;
+
+  @override
+  void initState() {
+    super.initState();
+    getLoginUserId();
+  }
+
+  Future getLoginUserId() async {
+    final String? temp = await UserData.getUserId();
+
+    setState(() {
+      currentUserId = int.tryParse(temp ?? '0');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +48,7 @@ class CommentsPage extends StatelessWidget {
             ListView.builder(
               //!!!!!
               shrinkWrap: true,
-              itemCount: comments.length,
+              itemCount: widget.comments.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -38,7 +60,7 @@ class CommentsPage extends StatelessWidget {
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          comments[index].content,
+                          widget.comments[index].content,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -47,19 +69,25 @@ class CommentsPage extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              LikeComment().likeCommnet(comments[index].id);
+                              LikeComment()
+                                  .likeCommnet(widget.comments[index].id);
                             },
-                            
                             icon: Icon(Icons.favorite_border),
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.delete),
-                          ),
+                          currentUserId == widget.comments[index].creatorId
+                              ? Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.delete),
+                                    ),
+                                  ],
+                                )
+                              : const Text(''),
                         ],
                       ),
                       subtitle: Padding(
@@ -73,11 +101,11 @@ class CommentsPage extends StatelessWidget {
                             ),
                             IconText(
                               icon: Icons.favorite,
-                              text: comments[index].likeCount.toString(),
+                              text: widget.comments[index].likeCount.toString(),
                             ),
                             IconText(
                               icon: Icons.date_range_rounded,
-                              text: comments[index].createdAt,
+                              text: widget.comments[index].createdAt,
                             ),
                           ],
                         ),
@@ -91,7 +119,7 @@ class CommentsPage extends StatelessWidget {
                 title: "Add comment",
                 onPress: () {
                   Get.to(CommentAddForm(
-                    recipeId: recipeId,
+                    recipeId: widget.recipeId,
                   ));
                 })
           ],

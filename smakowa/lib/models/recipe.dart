@@ -195,12 +195,14 @@ class Comment {
   final String content;
   final int likeCount;
   final String createdAt;
+  final int creatorId;
 
   Comment({
     required this.id,
     required this.content,
     required this.likeCount,
     required this.createdAt,
+    required this.creatorId,
   });
 
   Map<String, dynamic> toJson() => {
@@ -213,6 +215,7 @@ class Comment {
       content: json['content'],
       likeCount: json['likeCount'],
       createdAt: json['createdAt'],
+      creatorId: json['creatorId'],
     );
   }
 }
