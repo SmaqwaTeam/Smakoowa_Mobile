@@ -5,6 +5,7 @@ import 'package:smakowa/models/likes.api.dart';
 import 'package:smakowa/models/recipe.dart';
 import 'package:smakowa/pages/widget/elevation_button_custom.dart';
 
+import '../../utils/formatDate.dart';
 import '../widget/icon_text_detail_recipe.dart';
 import 'comment_add.dart';
 
@@ -105,7 +106,8 @@ class _CommentsPageState extends State<CommentsPage> {
                             ),
                             IconText(
                               icon: Icons.date_range_rounded,
-                              text: widget.comments[index].createdAt,
+                              text: getFormattedDate(
+                                  widget.comments[index].createdAt),
                             ),
                           ],
                         ),
