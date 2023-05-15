@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smakowa/models/auth/user_data.dart';
+import 'package:smakowa/models/comments.api.dart';
 import 'package:smakowa/models/likes.api.dart';
 import 'package:smakowa/models/recipe.dart';
 import 'package:smakowa/pages/widget/elevation_button_custom.dart';
@@ -78,12 +79,15 @@ class _CommentsPageState extends State<CommentsPage> {
                           currentUserId == widget.comments[index].creatorId
                               ? Row(
                                   children: [
+                                    // IconButton(
+                                    //   onPressed: () {},
+                                    //   icon: const Icon(Icons.edit),
+                                    // ),
                                     IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.edit),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        CommentRecipe().deleteComment(
+                                            widget.comments[index].id);
+                                      },
                                       icon: const Icon(Icons.delete),
                                     ),
                                   ],
@@ -96,10 +100,6 @@ class _CommentsPageState extends State<CommentsPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            IconText(
-                              icon: Icons.person,
-                              text: 'person',
-                            ),
                             IconText(
                               icon: Icons.favorite,
                               text: widget.comments[index].likeCount.toString(),

@@ -149,7 +149,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                             children: [
                               IconText(
                                 icon: Icons.access_time,
-                                text: '${recipe.time}',
+                                text: '${mapTimeToServe(recipe.time)}',
                               ),
                               IconText(
                                 icon: Icons.room_service,
@@ -157,7 +157,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                               IconText(
                                 icon: Icons.person,
-                                text: recipe.creator,
+                                text: recipe.creator!,
                               ),
                               IconText(
                                 icon: Icons.favorite,
@@ -178,20 +178,16 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           ),
                           const SizedBox(height: 20),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CustomElevationButton(
-                                title: 'Comments (${recipe.comments.length})',
+                                title: 'Comments (${recipe.comments!.length})',
                                 onPress: () {
                                   Get.to(CommentsPage(
-                                    comments: recipe.comments,
+                                    comments: recipe.comments!,
                                     recipeId: recipe.id,
                                   ));
                                 },
-                              ),
-                              CustomElevationButton(
-                                title: 'Add Comment',
-                                onPress: () {},
                               ),
                             ],
                           ),
@@ -250,3 +246,16 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
         });
   }
 }
+
+mapTimeToServe(int timeId) {
+  int timeValue = timeId;
+  return timeToServe[timeValue];
+}
+
+Map<int, dynamic> timeToServe = {
+  0: 'up to 15 min',
+  1: '15-30 min',
+  2: '30-45 min',
+  3: '45-60 min',
+  4: 'over 60 min'
+};

@@ -67,4 +67,55 @@ class CommentRecipe {
           });
     }
   }
+
+  Future<void> deleteComment(int recipeId) async {
+    final token = await UserData.getUserToken();
+
+    try {
+      final response = await http.delete(
+        Uri.parse(ApiEndPoints.baseUrl +
+            '/api/Comments/DeleteRecipeComment/$recipeId'),
+        headers: {
+          HttpHeaders.acceptHeader: 'text/plain',
+          HttpHeaders.authorizationHeader: 'Bearer ${token}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Success"),
+                content: Text(json['message'].toString()),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.off(const MyHomePage());
+                    },
+                    child: const Text('OK'),
+                  )
+                ],
+              );
+            });
+
+        // print(entry);
+      } else {
+        throw jsonDecode(response.body)['message'];
+      }
+    } catch (e) {
+      print(e);
+      showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return SimpleDialog(
+              title: Text('Error'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
+    }
+  }
 }
