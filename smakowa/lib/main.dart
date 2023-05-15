@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 
 void main() {
   //android certificate fix not for deploy
-  HttpOverrides.global = MyHttpOverrides();
+  // HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -159,11 +159,11 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 //certificate fix
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
-}
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback =
+//           (X509Certificate cert, String host, int port) => true;
+//   }
+// }

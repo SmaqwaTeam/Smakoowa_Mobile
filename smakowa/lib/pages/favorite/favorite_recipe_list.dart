@@ -33,12 +33,7 @@ class _FavoriteRecipeList extends State<FavoriteRecipeList> {
     });
   }
 
-  // loadRecipe() async {
-  //   final result = await RecipeApi().getRecipe(endpoint);
-  //   result.forEach((element) {
-  //     print(element.name);
-  //   });
-  // }
+
 
   @override
   Widget build(BuildContext context) {

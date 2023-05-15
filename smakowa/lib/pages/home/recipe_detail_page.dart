@@ -29,200 +29,208 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
     futureRecipeDetail = RecipeDetailsApi().getRecipeDetail(widget.recipeId);
 
     super.initState();
-    loadRecipeDetails();
+    // loadRecipeDetails();
   }
 
-  loadRecipeDetails() async {
-    final result = await RecipeDetailsApi().getRecipeDetail(widget.recipeId);
-
-    setState(() {});
+  reloadRecipes() async {
+    var newRecipe = await RecipeDetailsApi().getRecipeDetail(widget.recipeId);
+    setState(() {
+      futureRecipeDetail = Future.value(newRecipe);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: FutureBuilder<RecipeDeatil>(
-            future: futureRecipeDetail,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                RecipeDeatil recipe = snapshot.data;
-                return Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Image.network(
-                          recipe.imageId == null
-                              ? 'https://cdn.discordapp.com/attachments/1027658629886791752/1107630008526180392/dish_1.png'
-                              : '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/${recipe.imageId}',
-                          height: 250.0,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                        Positioned(
-                          top: 15,
-                          left: 15,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 4,
-                                    )
-                                  ]),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white.withOpacity(0.8),
-                                    size: 30,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: -1.0,
-                          left: 0.0,
-                          right: 0.0,
-                          child: Container(
-                            height: 15.0,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30.0),
-                                topRight: Radius.circular(30.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 0.0,
-                        bottom: 15.0,
-                        left: 15.0,
-                        right: 15.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          reloadRecipes();
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: FutureBuilder<RecipeDeatil>(
+              future: futureRecipeDetail,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  RecipeDeatil recipe = snapshot.data;
+                  return Column(
+                    children: [
+                      Stack(
                         children: [
-                          const SizedBox(height: 10.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                recipe.name,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w700),
-                              ),
-                              InkWell(
-                                child: const Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.black54,
+                          Image.network(
+                            recipe.imageId == null
+                                ? 'https://cdn.discordapp.com/attachments/1027658629886791752/1107630008526180392/dish_1.png'
+                                : '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/${recipe.imageId}',
+                            height: 250.0,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                          Positioned(
+                            top: 15,
+                            left: 15,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                      )
+                                    ]),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white.withOpacity(0.8),
+                                      size: 30,
+                                    ),
+                                  ],
                                 ),
-                                onTap: () {
-                                  LikeRecipe().likeRecipe(recipe.id);
-                                },
                               ),
-                            ],
+                            ),
                           ),
-                          const SizedBox(height: 15.0),
-                          Text(
-                            recipe.description,
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
-                          ),
-                          const SizedBox(height: 20.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconText(
-                                icon: Icons.access_time,
-                                text: '${mapTimeToServe(recipe.time)}',
+                          Positioned(
+                            bottom: -1.0,
+                            left: 0.0,
+                            right: 0.0,
+                            child: Container(
+                              height: 15.0,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0),
+                                ),
                               ),
-                              IconText(
-                                icon: Icons.room_service,
-                                text: 'Serving tier  ${recipe.servingsTier}',
-                              ),
-                              IconText(
-                                icon: Icons.person,
-                                text: recipe.creator!,
-                              ),
-                              IconText(
-                                icon: Icons.favorite,
-                                text: recipe.likeCount.toString(),
-                              ),
-                            ],
+                            ),
                           ),
-                          const SizedBox(height: 10.0),
-                          const Divider(
-                            thickness: 0.3,
-                            color: Colors.black54,
-                          ),
-                          RecipeIngredientsList(
-                            recipeInfo: recipe.ingredients,
-                          ),
-                          RecipeInstructionList(
-                            recipeInfo: recipe.instructions,
-                          ),
-                          const SizedBox(height: 2),
-                          Center(
-                              child: Text(
-                            'Views ${recipe.viewCount.toString()}',
-                            style: TextStyle(color: Colors.grey),
-                          )),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CustomElevationButton(
-                                title: 'Comments (${recipe.comments!.length})',
-                                onPress: () {
-                                  Get.to(CommentsPage(
-                                    comments: recipe.comments!,
-                                    recipeId: recipe.id,
-                                  ));
-                                },
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 50,
-                          ),
-                          widget.deleteViewAccess != null
-                              ? Center(
-                                  child: CustomElevationButton(
-                                    title: 'Delete',
-                                    customBackgroundColor: Colors.red,
-                                    onPress: () {
-                                      DeleteDialog(recipe);
-                                    },
-                                  ),
-                                )
-                              : Text(''),
                         ],
                       ),
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('Error ${snapshot.error}');
-              }
-              return const CircularProgressIndicator();
-            },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 0.0,
+                          bottom: 15.0,
+                          left: 15.0,
+                          right: 15.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  recipe.name,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                InkWell(
+                                  child: const Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.black54,
+                                  ),
+                                  onTap: () {
+                                    LikeRecipe().likeRecipe(recipe.id);
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15.0),
+                            Text(
+                              recipe.description,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 20.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconText(
+                                  icon: Icons.access_time,
+                                  text: '${mapTimeToServe(recipe.time)}',
+                                ),
+                                IconText(
+                                  icon: Icons.room_service,
+                                  text: 'Serving tier  ${recipe.servingsTier}',
+                                ),
+                                IconText(
+                                  icon: Icons.person,
+                                  text: recipe.creator!,
+                                ),
+                                IconText(
+                                  icon: Icons.favorite,
+                                  text: recipe.likeCount.toString(),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10.0),
+                            const Divider(
+                              thickness: 0.3,
+                              color: Colors.black54,
+                            ),
+                            RecipeIngredientsList(
+                              recipeInfo: recipe.ingredients,
+                            ),
+                            RecipeInstructionList(
+                              recipeInfo: recipe.instructions,
+                            ),
+                            const SizedBox(height: 2),
+                            Center(
+                                child: Text(
+                              'Views ${recipe.viewCount.toString()}',
+                              style: TextStyle(color: Colors.grey),
+                            )),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomElevationButton(
+                                  title:
+                                      'Comments (${recipe.comments!.length})',
+                                  onPress: () {
+                                    Get.to(CommentsPage(
+                                      comments: recipe.comments!,
+                                      recipeId: recipe.id,
+                                    ));
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            widget.deleteViewAccess != null
+                                ? Center(
+                                    child: CustomElevationButton(
+                                      title: 'Delete',
+                                      customBackgroundColor: Colors.red,
+                                      onPress: () {
+                                        DeleteDialog(recipe);
+                                      },
+                                    ),
+                                  )
+                                : Text(''),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error ${snapshot.error}');
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
           ),
         ),
       ),

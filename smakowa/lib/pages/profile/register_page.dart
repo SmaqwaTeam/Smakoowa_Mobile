@@ -22,7 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
