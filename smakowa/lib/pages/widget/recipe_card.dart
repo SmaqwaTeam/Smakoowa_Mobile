@@ -4,14 +4,12 @@ import '../../utils/endpoints.api.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
-  // final String rating;
   final String cookTime;
   final String? thumbnailUrl;
 
   RecipeCard({
     required this.title,
     required this.cookTime,
-    // required this.rating,
     this.thumbnailUrl,
   });
 
@@ -44,7 +42,7 @@ class RecipeCard extends StatelessWidget {
               ? NetworkImage(
                   '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/$thumbnailUrl')
               : const NetworkImage(
-                  'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'),
+                  'https://cdn.discordapp.com/attachments/1027658629886791752/1107630008526180392/dish_1.png'),
           fit: BoxFit.cover,
         ),
       ),
