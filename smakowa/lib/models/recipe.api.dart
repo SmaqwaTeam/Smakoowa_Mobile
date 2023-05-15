@@ -16,7 +16,6 @@ import 'package:dio_http2_adapter/dio_http2_adapter.dart' as dioHttp;
 
 class RecipeApi {
   Future<List<Recipe>> getRecipe(String url) async {
-    final token = await UserData.getUserToken();
     final response = await http.get(
       Uri.parse(url),
     );

@@ -34,11 +34,8 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
 
   loadRecipeDetails() async {
     final result = await RecipeDetailsApi().getRecipeDetail(widget.recipeId);
-    // print(result is RecipeDeatil ? 'yes' : 'no');
-    // print(result.description);
 
     setState(() {});
-    // return result;
   }
 
   @override
@@ -122,12 +119,15 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Tag'),
                           const SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(recipe.name),
+                              Text(
+                                recipe.name,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w700),
+                              ),
                               InkWell(
                                 child: const Icon(
                                   Icons.favorite_border,
@@ -142,6 +142,8 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           const SizedBox(height: 15.0),
                           Text(
                             recipe.description,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(height: 20.0),
                           Row(
