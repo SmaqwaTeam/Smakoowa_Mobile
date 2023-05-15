@@ -39,37 +39,55 @@ class Recipe {
 class RecipeDeatil {
   final int id;
   final String name;
-  final String time;
+  final int time; //zmiaina
   final int servingsTier;
   final String? imageId;
   final String description;
-  // final List<int> tagsId;
   final int categoryId;
-  final String creator;
+  final String? creator;
   final List<Ingredients> ingredients;
   final List<Instructions> instructions;
+  final List<Comment>? comments;
+  final List<dynamic> tagIds;
   // final Data createdAt;
-  final int likeCount;
+  final int? likeCount;
 
   RecipeDeatil({
     required this.id,
     required this.name,
     required this.time,
-    required this.imageId,
+    this.imageId,
     required this.servingsTier,
     required this.description,
     required this.categoryId,
     required this.ingredients,
     required this.instructions,
-    required this.likeCount,
-    required this.creator,
+    this.likeCount,
+    this.creator,
+    this.comments,
+    required this.tagIds,
   });
 
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "description": description,
+        "servingsTier": servingsTier,
+        "timeToMakeTier": time,
+        "categoryId": categoryId,
+        "tagIds": List<dynamic>.from(tagIds.map((x) => x)),
+        "ingredients": List<dynamic>.from(ingredients.map((x) => x.toJson())),
+        "instructions": List<dynamic>.from(instructions.map((x) => x.toJson())),
+      };
+
   factory RecipeDeatil.fromJson(
-      Map<String, dynamic> json,
-      List<Ingredients> ingredients,
-      List<Instructions> instructions,
-      int likeCount) {
+    Map<String, dynamic> json,
+    List<Ingredients> ingredients,
+    List<Instructions> instructions,
+    int likeCount,
+    List<Comment> comments,
+    List<dynamic> tags,
+  ) {
     int timeValue = json['timeToMakeTier'];
 
     return RecipeDeatil(
@@ -77,13 +95,15 @@ class RecipeDeatil {
       name: json['name'],
       imageId: json['imageId'],
       servingsTier: json['servingsTier'],
-      time: timeToServe[timeValue],
+      time: json['timeToMakeTier'],
       description: json['description'],
       categoryId: json['categoryId'],
       likeCount: likeCount,
       ingredients: ingredients,
       instructions: instructions,
       creator: json['creatorUsername'],
+      comments: comments,
+      tagIds: tags,
     );
   }
 }
@@ -183,5 +203,35 @@ class Instructions {
   }
   String getName() {
     return content;
+  }
+}
+
+class Comment {
+  final int id;
+  final String content;
+  final int likeCount;
+  final String createdAt;
+  final int creatorId;
+
+  Comment({
+    required this.id,
+    required this.content,
+    required this.likeCount,
+    required this.createdAt,
+    required this.creatorId,
+  });
+
+  Map<String, dynamic> toJson() => {
+        "content": content,
+      };
+
+  factory Comment.fromJson(Map<String, dynamic> json) {
+    return Comment(
+      id: json['id'],
+      content: json['content'],
+      likeCount: json['likeCount'],
+      createdAt: json['createdAt'],
+      creatorId: json['creatorId'],
+    );
   }
 }

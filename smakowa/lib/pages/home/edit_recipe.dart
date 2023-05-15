@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,42 +12,87 @@ import '../../models/category.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../models/tags.api.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../widget/edit_comp.dart';
 
-class AddRecipe extends StatefulWidget {
-  const AddRecipe({super.key, this.editRecipeId});
-  final int? editRecipeId;
+class EditRecipe extends StatefulWidget {
+  const EditRecipe({super.key, required this.editRecipeId});
+  final int editRecipeId;
   @override
-  State<AddRecipe> createState() => _AddRecipeState();
+  State<EditRecipe> createState() => _EditRecipeState();
 }
 
-class _AddRecipeState extends State<AddRecipe> {
+class _EditRecipeState extends State<EditRecipe> {
   final _formKey = GlobalKey<FormState>();
   List<String> ingredintsList = [];
   List<String> instrictionsList = [];
   List<int> tagsConfirmList = [];
   late Future<List<Categories>> futureCategories;
   late Future<List<Tags>> futureTags;
+  late Future<RecipeDeatil> futureEditData;
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController _ingrednitsController = TextEditingController();
-  final TextEditingController _instructionsController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController _ingrednitsController = TextEditingController();
+  TextEditingController _instructionsController = TextEditingController();
 
   int catergoryId = 1;
 
   double _currentServingsTierValue = 1;
   double _currentTimeToMake = 1;
 
+  File? selectedImage;
+
+  bool state = true;
   @override
   void initState() {
     super.initState();
     futureCategories = CategoryApiList().getCategory();
     futureTags = TagsApiList().getTags();
+    // futureEditData = RecipeDetailsApi().getRecipeDetail(widget.editRecipeId);
+
+    loadEditData(widget.editRecipeId);
   }
 
   loadEditData(int id) async {
     var temp = await RecipeDetailsApi().getRecipeDetail(id);
+    setState(() {
+      nameController.text = temp.name;
+      descriptionController.text = temp.description;
+      catergoryId = temp.categoryId;
+      _currentServingsTierValue = temp.servingsTier.toDouble();
+      ingredintsList = convertToStringList(temp.ingredients);
+      instrictionsList = convertToStringList(temp.instructions);
+      state = false;
+
+      // tagsConfirmList = temp.tagIds;
+    });
+  }
+
+  // Future getImage() async {
+  //   var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+  //   setState(() {
+  //     selectedImage = File(image!.path);
+  //   });
+  // }
+
+  Future getFromGalery() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    File file = File(image!.path);
+    setState(() {
+      selectedImage = File(image.path);
+    });
+  }
+
+  convertToStringList(List<dynamic> list) {
+    List<String> tempLits = [];
+    for (var i = 0; i < list.length; i++) {
+      tempLits.add(list[i].getName());
+    }
+    return tempLits;
   }
 
   @override
@@ -237,6 +284,23 @@ class _AddRecipeState extends State<AddRecipe> {
                   instrictionsList,
                 ),
                 const SizedBox(height: 30),
+                selectedImage == null
+                    ? const Icon(Icons.add_photo_alternate)
+                    : SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Image.file(
+                          selectedImage!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                ElevatedButton(
+                    onPressed: () {
+                      getFromGalery();
+                      print(selectedImage);
+                    },
+                    child: Text('Upload img')),
+                const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -244,8 +308,8 @@ class _AddRecipeState extends State<AddRecipe> {
                         const SnackBar(content: Text('Processing Data')),
                       );
                       try {
-                        print(tagsConfirmList[0]);
-                        var newRecipe = createRecipeAddObject(
+                        var newRecipe = createEditObject(
+                          widget.editRecipeId,
                           nameController.text,
                           descriptionController.text,
                           ingredintsList,
@@ -255,7 +319,14 @@ class _AddRecipeState extends State<AddRecipe> {
                           _currentServingsTierValue,
                           _currentTimeToMake,
                         );
-                        RecipeDetailsApi().postRecipe(newRecipe);
+                        RecipeDetailsApi().putRecipe(
+                          newRecipe,
+                          widget.editRecipeId,
+                        );
+                        if (selectedImage != null) {
+                          RecipeDetailsApi().onUploadImage(
+                              selectedImage!, widget.editRecipeId);
+                        }
                       } catch (e) {
                         print(e);
                       }
@@ -367,46 +438,4 @@ class _AddRecipeState extends State<AddRecipe> {
           );
         });
   }
-}
-
-RecipeAdd createRecipeAddObject(
-  String title,
-  descrption,
-  List<String> ingredients,
-  List<String> instructions,
-  List<int> tags,
-  int category,
-  double servings,
-  timeTomake,
-) {
-  List<Ingredients> ingredientsObjectList = [];
-  List<Instructions> instructionObjectList = [];
-
-  const int group = 1;
-  int position = 1;
-
-  for (var i = 0; i < ingredients.length; i++) {
-    ingredientsObjectList.add(
-        Ingredients(name: ingredients[i], group: group, position: position));
-    position++;
-  }
-
-  for (var i = 0; i < instructions.length; i++) {
-    instructionObjectList.add(Instructions(
-      content: instructions[i],
-      position: position,
-    ));
-    position++;
-  }
-
-  return RecipeAdd(
-    name: title,
-    description: descrption,
-    servingsTier: servings.toInt(),
-    time: timeTomake.toInt(),
-    categoryId: category,
-    tagIds: tags,
-    ingredients: ingredientsObjectList,
-    instructions: instructionObjectList,
-  );
 }

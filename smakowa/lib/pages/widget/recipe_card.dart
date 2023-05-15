@@ -79,30 +79,6 @@ class RecipeCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Container(
-                //   padding: const EdgeInsets.all(5),
-                //   margin: const EdgeInsets.all(10),
-                //   decoration: BoxDecoration(
-                //     color: Colors.black.withOpacity(0.4),
-                //     borderRadius: BorderRadius.circular(15),
-                //   ),
-                //   child: Row(
-                //     children: const [
-                //       Icon(
-                //         Icons.star,
-                //         color: Colors.yellow,
-                //         size: 18,
-                //       ),
-                //       SizedBox(width: 7),
-                //       Text(
-                //         '5.0',
-                //         style: TextStyle(
-                //           color: Colors.white,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 Container(
                   padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.all(10),

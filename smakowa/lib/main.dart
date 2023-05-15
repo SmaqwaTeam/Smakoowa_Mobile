@@ -138,9 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
-          // Divider(
-          //   color: Colors.grey,
-          // ),
           CustomDrawerListTile(
             title: 'Tags',
             icon: Icons.tag,

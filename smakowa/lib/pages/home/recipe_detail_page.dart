@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:smakowa/models/like_recipe.api.dart';
+import 'package:smakowa/models/likes.api.dart';
 import 'package:smakowa/models/recipe.api.dart';
+import 'package:smakowa/pages/home/comments_page.dart';
 
 import '../../models/recipe.dart';
 import '../../utils/endpoints.api.dart';
+import '../widget/elevation_button_custom.dart';
 import '../widget/icon_text_detail_recipe.dart';
-import '../widget/recipe_details_list.dart';
+import '../widget/ingerdiens_instr_list.dart';
 
 class RecipeDetailsPage extends StatefulWidget {
   const RecipeDetailsPage(
@@ -24,21 +26,16 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
 
   @override
   void initState() {
-    futureRecipeDetail =
-        RecipeDetailsApi(id: widget.recipeId).getRecipeDetail();
+    futureRecipeDetail = RecipeDetailsApi().getRecipeDetail(widget.recipeId);
 
     super.initState();
     loadRecipeDetails();
   }
 
   loadRecipeDetails() async {
-    final result =
-        await RecipeDetailsApi(id: widget.recipeId).getRecipeDetail();
-    // print(result is RecipeDeatil ? 'yes' : 'no');
-    // print(result.description);
+    final result = await RecipeDetailsApi().getRecipeDetail(widget.recipeId);
 
     setState(() {});
-    // return result;
   }
 
   @override
@@ -122,12 +119,15 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Tag'),
                           const SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(recipe.name),
+                              Text(
+                                recipe.name,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w700),
+                              ),
                               InkWell(
                                 child: const Icon(
                                   Icons.favorite_border,
@@ -142,6 +142,8 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           const SizedBox(height: 15.0),
                           Text(
                             recipe.description,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(height: 20.0),
                           Row(
@@ -149,7 +151,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                             children: [
                               IconText(
                                 icon: Icons.access_time,
-                                text: '${recipe.time}',
+                                text: '${mapTimeToServe(recipe.time)}',
                               ),
                               IconText(
                                 icon: Icons.room_service,
@@ -157,7 +159,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                               ),
                               IconText(
                                 icon: Icons.person,
-                                text: recipe.creator,
+                                text: recipe.creator!,
                               ),
                               IconText(
                                 icon: Icons.favorite,
@@ -176,52 +178,32 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           RecipeInstructionList(
                             recipeInfo: recipe.instructions,
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomElevationButton(
+                                title: 'Comments (${recipe.comments!.length})',
+                                onPress: () {
+                                  Get.to(CommentsPage(
+                                    comments: recipe.comments!,
+                                    recipeId: recipe.id,
+                                  ));
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
                           widget.deleteViewAccess != null
                               ? Center(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red,
-                                      padding: const EdgeInsets.only(
-                                        top: 18,
-                                        bottom: 18,
-                                        left: 50,
-                                        right: 50,
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                          context: Get.context!,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: Text("Warring"),
-                                              content: Text(
-                                                  'Are you sure to delete this recipe?'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    RecipeApi().deleteRecipe(
-                                                        recipe.id);
-                                                  },
-                                                  child: const Text('Yes'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('No'),
-                                                )
-                                              ],
-                                            );
-                                          });
+                                  child: CustomElevationButton(
+                                    title: 'Delete',
+                                    customBackgroundColor: Colors.red,
+                                    onPress: () {
+                                      DeleteDialog(recipe);
                                     },
-                                    child: const Text(
-                                      'Delete',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                      ),
-                                    ),
                                   ),
                                 )
                               : Text(''),
@@ -240,4 +222,42 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
       ),
     );
   }
+
+  Future<dynamic> DeleteDialog(RecipeDeatil recipe) {
+    return showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Warring"),
+            content: Text('Are you sure to delete this recipe?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  RecipeApi().deleteRecipe(recipe.id);
+                },
+                child: const Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No'),
+              )
+            ],
+          );
+        });
+  }
 }
+
+mapTimeToServe(int timeId) {
+  int timeValue = timeId;
+  return timeToServe[timeValue];
+}
+
+Map<int, dynamic> timeToServe = {
+  0: 'up to 15 min',
+  1: '15-30 min',
+  2: '30-45 min',
+  3: '45-60 min',
+  4: 'over 60 min'
+};

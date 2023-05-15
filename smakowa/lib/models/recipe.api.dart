@@ -11,18 +11,13 @@ import 'package:smakowa/models/recipe.dart';
 
 import '../main.dart';
 import '../utils/endpoints.api.dart';
+import 'package:dio/dio.dart' as dioo;
+import 'package:dio_http2_adapter/dio_http2_adapter.dart' as dioHttp;
 
 class RecipeApi {
   Future<List<Recipe>> getRecipe(String url) async {
-    final token = await UserData.getUserToken();
     final response = await http.get(
       Uri.parse(url),
-      // headers: {
-      //   //is save to send token i get?
-
-      //   HttpHeaders.acceptHeader: 'text/plain',
-      //   if (token != null) HttpHeaders.authorizationHeader: 'Bearer ${token}',
-      // },
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -126,13 +121,7 @@ class RecipeApi {
 }
 
 class RecipeDetailsApi {
-  final int id;
-
-  RecipeDetailsApi({
-    required this.id,
-  });
-
-  Future<RecipeDeatil> getRecipeDetail() async {
+  Future<RecipeDeatil> getRecipeDetail(int id) async {
     final response = await http.get(
       Uri.parse(
         ApiEndPoints.baseUrl + '/api/Recipes/GetByIdDetailed/${id}',
@@ -141,18 +130,10 @@ class RecipeDetailsApi {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
 
-      List<String> ingList = [];
+      // List<int> tagsList = [];
 
       final entry = json['content'];
       final likeCount = json['content']['likes'].length;
-      // List<String> ing = [];
-      // for (var i = 0; i < json['content']['ingredients'].length; i++) {
-      //   final temp = json['content']['ingredients'][i]['name'];
-
-      //   ingList.add(
-      //     temp,
-      //   );
-      // }
 
       final ingrediendts = (json['content']['ingredients'] as List)
           .map((e) => Ingredients.fromJson(e))
@@ -162,23 +143,25 @@ class RecipeDetailsApi {
           .map((e) => Instructions.fromJson(e))
           .toList();
 
-      final recipeDetail =
-          RecipeDeatil.fromJson(entry, ingrediendts, instructions, likeCount);
+      final comments = (json['content']['recipeComments'] as List)
+          .map((e) => Comment.fromJson(e))
+          .toList();
+      final tags = json['content']['tagIds'].toList();
 
-      // print('like ' + likeCount.toString());
+      final recipeDetail = RecipeDeatil.fromJson(
+          entry, ingrediendts, instructions, likeCount, comments, tags);
+
       return recipeDetail;
     } else {
       throw Exception('Failed to load recipe');
     }
   }
-}
 
-class RecipeSendApi {
   Future<void> postRecipe(RecipeAdd recipe) async {
     Map data = recipe.toJson();
 
     final token = await UserData.getUserToken();
-    print('Bearer ${token}');
+
     try {
       final response = await http.post(
         Uri.parse(ApiEndPoints.baseUrl + '/api/Recipes/Create'),
@@ -227,4 +210,100 @@ class RecipeSendApi {
           });
     }
   }
+
+  Future<void> putRecipe(RecipeDeatil recipe, int recipeid) async {
+    Map data = recipe.toJson();
+
+    final token = await UserData.getUserToken();
+
+    try {
+      final response = await http.put(
+        Uri.parse('${ApiEndPoints.baseUrl}/api/Recipes/Edit/${recipeid}'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'text/plain',
+          HttpHeaders.authorizationHeader: 'Bearer ${token}',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Success"),
+                content: Text(json['message'].toString()),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.off(const MyHomePage());
+                    },
+                    child: const Text('OK'),
+                  )
+                ],
+              );
+            });
+
+        // print(entry);
+      } else {
+        throw jsonDecode(response.body)['message'];
+      }
+    } catch (e) {
+      print(e);
+      showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return SimpleDialog(
+              title: Text('Error'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
+    }
+  }
+
+  onUploadImage(File img, int id) async {
+    final token = await UserData.getUserToken();
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(ApiEndPoints.baseUrl + '/api/Images/AddImageToRecipe/$id'),
+    );
+    Map<String, String> headers = {
+      "Content-type": "multipart/form-data",
+      "accept": "text/plain",
+      "Authorization": "Bearer ${token}",
+    };
+    request.files.add(
+      http.MultipartFile(
+        'image',
+        img.readAsBytes().asStream(),
+        img.lengthSync(),
+        filename: img.path.split('/').last,
+      ),
+    );
+    request.headers.addAll(headers);
+    print("request: " + request.toString());
+    var res = await request.send();
+    http.Response response = await http.Response.fromStream(res);
+  }
 }
+  // uploadImage(File img, int id) async {
+  //   final token = await UserData.getUserToken();
+  //   var formData = dioo.FormData.fromMap(
+  //     {
+  //       "image": await dioo.MultipartFile.fromFile(img.path),
+  //     },
+  //   );
+  //   var responce = dioo.Dio()
+  //       .post(ApiEndPoints.baseUrl + '/api/Images/AddImageToRecipe/$id',
+  //           options: dioo.Options(headers: {
+  //             HttpHeaders.acceptHeader: 'text/plain',
+  //             HttpHeaders.authorizationHeader: 'Bearer ${token}',
+  //           }),
+  //           data: formData);
+
+  //   debugPrint(responce.toString());
+  // }

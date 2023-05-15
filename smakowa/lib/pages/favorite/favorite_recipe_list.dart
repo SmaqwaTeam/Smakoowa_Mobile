@@ -30,7 +30,6 @@ class _FavoriteRecipeList extends State<FavoriteRecipeList> {
     var newRecipe = await RecipeApi().getCurrentUSerRecipe(endpoint);
     setState(() {
       futureRecipes = Future.value(newRecipe);
-      print(futureRecipes);
     });
   }
 
