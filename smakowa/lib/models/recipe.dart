@@ -51,6 +51,7 @@ class RecipeDeatil {
   final List<dynamic> tagIds;
   // final Data createdAt;
   final int? likeCount;
+  final int? viewCount;
 
   RecipeDeatil({
     required this.id,
@@ -66,6 +67,7 @@ class RecipeDeatil {
     this.creator,
     this.comments,
     required this.tagIds,
+    this.viewCount,
   });
 
   Map<String, dynamic> toJson() => {
@@ -104,6 +106,7 @@ class RecipeDeatil {
       creator: json['creatorUsername'],
       comments: comments,
       tagIds: tags,
+      viewCount: json['viewCount'],
     );
   }
 }

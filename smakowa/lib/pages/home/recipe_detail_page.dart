@@ -55,7 +55,7 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                       children: [
                         Image.network(
                           recipe.imageId == null
-                              ? 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'
+                              ? 'https://cdn.discordapp.com/attachments/1027658629886791752/1107630008526180392/dish_1.png'
                               : '${ApiEndPoints.baseUrl}/api/Images/GetRecipeImage/${recipe.imageId}',
                           height: 250.0,
                           width: double.infinity,
@@ -178,6 +178,12 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                           RecipeInstructionList(
                             recipeInfo: recipe.instructions,
                           ),
+                          const SizedBox(height: 2),
+                          Center(
+                              child: Text(
+                            'Views ${recipe.viewCount.toString()}',
+                            style: TextStyle(color: Colors.grey),
+                          )),
                           const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
