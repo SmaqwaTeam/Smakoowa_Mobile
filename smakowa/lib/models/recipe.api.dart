@@ -290,20 +290,3 @@ class RecipeDetailsApi {
     http.Response response = await http.Response.fromStream(res);
   }
 }
-  // uploadImage(File img, int id) async {
-  //   final token = await UserData.getUserToken();
-  //   var formData = dioo.FormData.fromMap(
-  //     {
-  //       "image": await dioo.MultipartFile.fromFile(img.path),
-  //     },
-  //   );
-  //   var responce = dioo.Dio()
-  //       .post(ApiEndPoints.baseUrl + '/api/Images/AddImageToRecipe/$id',
-  //           options: dioo.Options(headers: {
-  //             HttpHeaders.acceptHeader: 'text/plain',
-  //             HttpHeaders.authorizationHeader: 'Bearer ${token}',
-  //           }),
-  //           data: formData);
-
-  //   debugPrint(responce.toString());
-  // }
