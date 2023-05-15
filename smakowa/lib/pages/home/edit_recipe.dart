@@ -14,7 +14,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../models/tags.api.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../widget/edit_recipe_comp.dart';
+import '../widget/edit_comp.dart';
 
 class EditRecipe extends StatefulWidget {
   const EditRecipe({super.key, required this.editRecipeId});
@@ -284,6 +284,23 @@ class _EditRecipeState extends State<EditRecipe> {
                   instrictionsList,
                 ),
                 const SizedBox(height: 30),
+                selectedImage == null
+                    ? const Icon(Icons.add_photo_alternate)
+                    : SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Image.file(
+                          selectedImage!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                ElevatedButton(
+                    onPressed: () {
+                      getFromGalery();
+                      print(selectedImage);
+                    },
+                    child: Text('Upload img')),
+                const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -332,22 +349,6 @@ class _EditRecipeState extends State<EditRecipe> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                selectedImage == null
-                    ? const Icon(Icons.add_photo_alternate)
-                    : SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Image.file(
-                          selectedImage!,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                ElevatedButton(
-                    onPressed: () {
-                      getFromGalery();
-                      print(selectedImage);
-                    },
-                    child: Text('Upload img')),
               ],
             ),
           ),

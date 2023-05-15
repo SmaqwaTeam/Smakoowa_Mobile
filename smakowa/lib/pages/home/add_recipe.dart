@@ -10,6 +10,7 @@ import '../../models/category.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../models/tags.api.dart';
+import '../widget/edit_comp.dart';
 
 class AddRecipe extends StatefulWidget {
   const AddRecipe({super.key, this.editRecipeId});
@@ -408,35 +409,4 @@ RecipeAdd createRecipeAddObject(
     ingredients: ingredientsObjectList,
     instructions: instructionObjectList,
   );
-}
-
-class CustomFormTextField extends StatelessWidget {
-  const CustomFormTextField(
-      {super.key,
-      required TextEditingController textControler,
-      required this.labelText,
-      required this.hintText})
-      : _inputController = textControler;
-
-  final TextEditingController _inputController;
-  final String labelText;
-  final String hintText;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: _inputController,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Enter ${labelText}';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: labelText,
-        hintText: hintText,
-      ),
-    );
-  }
 }

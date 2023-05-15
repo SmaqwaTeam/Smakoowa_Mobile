@@ -22,24 +22,3 @@ class Tags {
     );
   }
 }
-
-Future<List<Tags>> getTags() async {
-  final response =
-      await http.get(Uri.parse('https://localhost:7188/api/Tags/GetAll'));
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body);
-    final List<Tags> tags = [];
-
-    for (var i = 0; i < data['content'].length; i++) {
-      final entry = data['content'][i];
-
-      tags.add(
-        Tags.fromJson(entry),
-      );
-    }
-    
-    return tags;
-  } else {
-    throw Exception('Failed to load album');
-  }
-}

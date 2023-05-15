@@ -25,7 +25,6 @@ class _CurrentUserRecipes extends State<CurrentUserRecipes> {
   @override
   void initState() {
     super.initState();
-    // loadRecipe();
 
     futureRecipes = RecipeApi().getCurrentUSerRecipe(endpoint);
   }
@@ -34,7 +33,6 @@ class _CurrentUserRecipes extends State<CurrentUserRecipes> {
     var newRecipe = await RecipeApi().getCurrentUSerRecipe(endpoint);
     setState(() {
       futureRecipes = Future.value(newRecipe);
-      print(futureRecipes);
     });
   }
 
