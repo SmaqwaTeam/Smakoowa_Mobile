@@ -12,8 +12,8 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../models/tags.api.dart';
 
 class AddRecipe extends StatefulWidget {
-  const AddRecipe({super.key});
-
+  const AddRecipe({super.key, this.editRecipeId});
+  final int? editRecipeId;
   @override
   State<AddRecipe> createState() => _AddRecipeState();
 }
@@ -30,7 +30,6 @@ class _AddRecipeState extends State<AddRecipe> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController _ingrednitsController = TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
-  final TextEditingController tagController = TextEditingController();
 
   int catergoryId = 1;
 
@@ -42,6 +41,10 @@ class _AddRecipeState extends State<AddRecipe> {
     super.initState();
     futureCategories = CategoryApiList().getCategory();
     futureTags = TagsApiList().getTags();
+  }
+
+  loadEditData(int id) async {
+    var temp = await RecipeDetailsApi().getRecipeDetail(id);
   }
 
   @override
@@ -80,7 +83,7 @@ class _AddRecipeState extends State<AddRecipe> {
                     const Text('Select Category'),
                     const SizedBox(width: 15),
                     SizedBox(
-                      width: 350,
+                      width: 250,
                       child: FutureBuilder<List<Categories>>(
                           future: futureCategories,
                           builder: (context, AsyncSnapshot snapshot) {
@@ -116,7 +119,7 @@ class _AddRecipeState extends State<AddRecipe> {
                     ),
                     const SizedBox(width: 20),
                     SizedBox(
-                      width: 350,
+                      width: 250,
                       child: FutureBuilder(
                         future: futureTags,
                         builder: (context, AsyncSnapshot snapshot) {
@@ -296,7 +299,7 @@ class _AddRecipeState extends State<AddRecipe> {
             bottom: 0,
           ),
           child: SizedBox(
-            width: 300,
+            width: 200,
             height: 50,
             child: TextFormField(
               inputFormatters: [

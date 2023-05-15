@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smakowa/pages/home/add_recipe.dart';
+import 'package:smakowa/pages/home/edit_recipe.dart';
 import 'package:smakowa/pages/home/recipe_detail_page.dart';
 import 'package:smakowa/pages/widget/edit_recipe_card.dart';
 import 'package:smakowa/pages/widget/recipe_card.dart';
@@ -64,7 +66,11 @@ class _CurrentUserRecipes extends State<CurrentUserRecipes> {
                         description: recipe.description,
                         // cookTime: recipe.time.toString(),
                         thumbnailUrl: recipe.imageId,
-                        editOnPress: () {},
+                        editOnPress: () {
+                          Get.to(
+                            EditRecipe(editRecipeId: recipe.id),
+                          );
+                        },
                         onPress: () {
                           Navigator.push(
                             context,
