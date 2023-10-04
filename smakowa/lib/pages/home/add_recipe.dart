@@ -54,7 +54,7 @@ class _AddRecipeState extends State<AddRecipe> {
       appBar: AppBar(
         title: const Text('Create Recipe'),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(
