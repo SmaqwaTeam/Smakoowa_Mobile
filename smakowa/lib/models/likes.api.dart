@@ -1,3 +1,4 @@
+import '../utils/customDialogs.dart';
 import '../utils/endpoints.api.dart';
 import 'auth/user_data.dart';
 import 'package:flutter/material.dart';
@@ -42,28 +43,10 @@ class LikeRecipe {
         }
       } catch (e) {
         print(e);
-        showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return SimpleDialog(
-                title: Text('Error'),
-                contentPadding: const EdgeInsets.all(20),
-                children: [Text(e.toString())],
-              );
-            });
+        CustomShowDialog('Error', e.toString());
       }
     } else {
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return const SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [
-                Text('To add favorite recipe login first'),
-              ],
-            );
-          });
+      CustomShowDialog('Error', 'To add favorite recipe login first');
     }
   }
 }
@@ -89,43 +72,17 @@ class LikeComment {
         if (response.statusCode == 200) {
           final json = jsonDecode(response.body);
 
-          showDialog(
-              context: Get.context!,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("Success"),
-                  content: Text(json['message'].toString()),
-                );
-              });
-
+          CustomShowDialog('Success', json['message'].toString());
           // print(entry);
         } else {
           throw jsonDecode(response.body)['message'];
         }
       } catch (e) {
         print(e);
-        showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return SimpleDialog(
-                title: Text('Error'),
-                contentPadding: const EdgeInsets.all(20),
-                children: [Text(e.toString())],
-              );
-            });
+        CustomShowDialog('Error', e.toString());
       }
     } else {
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return const SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [
-                Text('To like this comment login first'),
-              ],
-            );
-          });
+      CustomShowDialog('Error', 'To like this comment login first');
     }
   }
 
@@ -149,14 +106,7 @@ class LikeComment {
         if (response.statusCode == 200) {
           final json = jsonDecode(response.body);
 
-          showDialog(
-              context: Get.context!,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("Success"),
-                  content: Text(json['message'].toString()),
-                );
-              });
+          CustomShowDialog('Success', json['message'].toString());
 
           // print(entry);
         } else {
@@ -164,28 +114,12 @@ class LikeComment {
         }
       } catch (e) {
         print(e);
-        showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return SimpleDialog(
-                title: Text('Error'),
-                contentPadding: const EdgeInsets.all(20),
-                children: [Text(e.toString())],
-              );
-            });
+        CustomShowDialog('Error', e.toString());
       }
     } else {
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return const SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [
-                Text('To like this comment login first'),
-              ],
-            );
-          });
+      CustomShowDialog('Error', 'To like this comment login first');
     }
   }
 }
+
+
