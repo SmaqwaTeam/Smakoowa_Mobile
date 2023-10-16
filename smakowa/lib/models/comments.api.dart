@@ -8,6 +8,7 @@ import 'package:smakowa/models/auth/user_data.dart';
 import 'dart:convert';
 
 import '../main.dart';
+import '../utils/customDialogs.dart';
 import '../utils/endpoints.api.dart';
 
 class CommentRecipe {
@@ -56,15 +57,7 @@ class CommentRecipe {
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 
@@ -107,15 +100,7 @@ class CommentRecipe {
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 }
