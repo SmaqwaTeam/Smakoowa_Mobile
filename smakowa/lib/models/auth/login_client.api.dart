@@ -11,6 +11,8 @@ import 'package:smakowa/main.dart';
 import 'package:smakowa/utils/endpoints.api.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../utils/customDialogs.dart';
+
 class LoginApiClient extends GetxController {
   final Future<SharedPreferences> _userData = SharedPreferences.getInstance();
 
@@ -69,15 +71,7 @@ class LoginApiClient extends GetxController {
     } catch (e) {
       print(e.toString());
 
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 }

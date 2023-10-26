@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:smakowa/models/recipe.dart';
 
 import '../main.dart';
+import '../utils/customDialogs.dart';
 import '../utils/endpoints.api.dart';
 import 'package:dio/dio.dart' as dioo;
 import 'package:dio_http2_adapter/dio_http2_adapter.dart' as dioHttp;
@@ -107,15 +108,7 @@ class RecipeApi {
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 }
@@ -199,15 +192,7 @@ class RecipeDetailsApi {
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 
@@ -253,15 +238,7 @@ class RecipeDetailsApi {
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 

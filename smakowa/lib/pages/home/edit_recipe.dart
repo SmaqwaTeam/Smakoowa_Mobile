@@ -66,7 +66,7 @@ class _EditRecipeState extends State<EditRecipe> {
       instrictionsList = convertToStringList(temp.instructions);
       state = false;
 
-      // tagsConfirmList = temp.tagIds;
+      tagsConfirmList = convertToInt(temp.tagIds);
     });
   }
 
@@ -95,11 +95,19 @@ class _EditRecipeState extends State<EditRecipe> {
     return tempLits;
   }
 
+  convertToInt(List<dynamic> list) {
+    List<int> tempLits = [];
+    for (var i = 0; i < list.length; i++) {
+      tempLits.add(list[i]);
+    }
+    return tempLits;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Recipe'),
+        title: const Text('Edit Recipe'),
       ),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
@@ -174,6 +182,7 @@ class _EditRecipeState extends State<EditRecipe> {
                           if (snapshot.hasData) {
                             List<Tags> tagDropDown = snapshot.data;
                             return MultiSelectDialogField(
+                              initialValue: tagsConfirmList,
                               items: tagDropDown
                                   .map((item) => MultiSelectItem(
                                         item.id,
@@ -299,7 +308,7 @@ class _EditRecipeState extends State<EditRecipe> {
                       getFromGalery();
                       print(selectedImage);
                     },
-                    child: Text('Upload img')),
+                    child: const Text('Upload image')),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
@@ -341,7 +350,7 @@ class _EditRecipeState extends State<EditRecipe> {
                     ),
                   ),
                   child: const Text(
-                    'Create',
+                    'Edit',
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,

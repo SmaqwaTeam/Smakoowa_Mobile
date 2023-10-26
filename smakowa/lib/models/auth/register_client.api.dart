@@ -12,6 +12,8 @@ import 'package:smakowa/pages/profile/login_page.dart';
 import 'package:smakowa/utils/endpoints.api.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../utils/customDialogs.dart';
+
 class RegisterApiClient extends GetxController {
   final storage = new FlutterSecureStorage();
 
@@ -36,6 +38,7 @@ class RegisterApiClient extends GetxController {
       if (responce.statusCode == 200) {
         final decode = jsonDecode(responce.body);
 
+       
         showDialog(
             context: Get.context!,
             builder: (context) {
@@ -59,15 +62,7 @@ class RegisterApiClient extends GetxController {
     } catch (e) {
       print(e.toString());
 
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 }
