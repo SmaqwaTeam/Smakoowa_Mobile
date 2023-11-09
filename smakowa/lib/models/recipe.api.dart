@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:smakowa/models/recipe.dart';
 
 import '../main.dart';
+import '../utils/customDialogs.dart';
 import '../utils/endpoints.api.dart';
 import 'package:dio/dio.dart' as dioo;
 import 'package:dio_http2_adapter/dio_http2_adapter.dart' as dioHttp;
@@ -21,12 +22,10 @@ class RecipeApi {
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
       final List<Recipe> recipe = [];
 
       for (var i = 0; i < data['content'].length; i++) {
         final entry = data['content'][i];
-
         recipe.add(
           Recipe.fromJson(entry),
         );
@@ -100,22 +99,13 @@ class RecipeApi {
                 ],
               );
             });
-
         // print(entry);
       } else {
         throw jsonDecode(response.body)['message'];
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 }
@@ -199,15 +189,7 @@ class RecipeDetailsApi {
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 
@@ -253,15 +235,7 @@ class RecipeDetailsApi {
       }
     } catch (e) {
       print(e);
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomShowDialog('Error', e.toString());
     }
   }
 
