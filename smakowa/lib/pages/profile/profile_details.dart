@@ -104,11 +104,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
               const SizedBox(
                 height: 15,
               ),
-              CustomDrawerListTile(
-                title: 'Liked tags',
-                icon: Icons.tag,
-                onPress: () {},
-              ),
+              // CustomDrawerListTile(
+              //   title: 'Liked tags',
+              //   icon: Icons.tag,
+              //   onPress: () {},
+              // ),
               //test
 
               const SizedBox(

@@ -22,12 +22,10 @@ class RecipeApi {
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
       final List<Recipe> recipe = [];
 
       for (var i = 0; i < data['content'].length; i++) {
         final entry = data['content'][i];
-
         recipe.add(
           Recipe.fromJson(entry),
         );
@@ -101,7 +99,6 @@ class RecipeApi {
                 ],
               );
             });
-
         // print(entry);
       } else {
         throw jsonDecode(response.body)['message'];

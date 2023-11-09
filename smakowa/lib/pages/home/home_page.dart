@@ -61,7 +61,6 @@ class _HomePageState extends State<HomePage> {
                   Recipe recipe = snapshot.data?[index];
                   return GestureDetector(
                     onTap: () {
-                      // Get.to(RecipeDetailsPage(recipeId: recipe.id,));
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -72,7 +71,6 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                       );
-                      print(recipe.id);
                     },
                     child: RecipeCard(
                       title: recipe.name,
