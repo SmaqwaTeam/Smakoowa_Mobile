@@ -1,16 +1,34 @@
-# smakowa
+# Smakowa mobile 
 
-Flutter project for recipe  mobile app
+Flutter project for culinary community. Enables users to discover, rate and create recipes. Cross-platform apliaction using custom Full-Rest-API. 
 
-## Getting Started
+## Preview
 
-This project is a starting point for a Flutter application.
+![preview](assets/preview/preview_1.jpg)
+![preview](assets/preview/preview_2.jpg)
 
-A few resources to get you started if this is your first Flutter project:
+## Requirements
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+To run and test this project locally, you need the following on your machine:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter SDK
+- Dart
+- Android Studio / VS Code
+- Android emulator 
+## Installation and Running
+
+1. Clone the repository to your local machine
+2. Navigate to the project directory
+```
+ cd YourApplicationName
+ ```
+ 3. Install dependencies
+```
+flutter pub get
+```
+4. Connect your android emulator with code editor
+5. Run the application
+```
+flutter run
+```
+`Note that this app needs external backend API to work properly.` Flutter project should now be accessible.
